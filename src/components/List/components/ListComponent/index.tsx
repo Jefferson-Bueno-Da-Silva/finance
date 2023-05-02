@@ -1,5 +1,5 @@
-import React, { useRef, useCallback } from "react";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import React, { useRef, useCallback, memo } from "react";
+import { Animated, StyleSheet } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { RectButton } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
@@ -18,99 +18,106 @@ const ListComponent: React.FC = () => {
     swipeableRowRef.current?.close();
   }, [swipeableRowRef]);
 
-  const renderLeftActions = (
-    progress: Animated.AnimatedInterpolation<number>,
-    _dragAnimatedValue: Animated.AnimatedInterpolation<number>
-  ) => {
-    const trans = progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [-100, 0],
-      extrapolate: "clamp",
-    });
+  const renderLeftActions = useCallback(
+    (
+      progress: Animated.AnimatedInterpolation<number>,
+      _dragAnimatedValue: Animated.AnimatedInterpolation<number>
+    ) => {
+      const trans = progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [-100, 0],
+        extrapolate: "clamp",
+      });
 
-    const pressHandler = () => {
-      closeSwipeable();
-    };
+      const pressHandler = () => {
+        closeSwipeable();
+      };
 
-    return (
-      <Animated.View style={{ transform: [{ translateX: trans }] }}>
-        <LinearGradient
-          colors={GradientColors.green.colors}
-          style={{
-            width: 100,
-            height: "100%",
-            flexDirection: "row",
-          }}
-        >
-          <RectButton
-            style={[
-              {
-                justifyContent: "center",
-                alignItems: "center",
-                flex: 1,
-                padding: 16,
-              },
-            ]}
-            onPress={pressHandler}
+      return (
+        <Animated.View style={{ transform: [{ translateX: trans }] }}>
+          <LinearGradient
+            colors={GradientColors.green.colors}
+            style={{
+              width: 100,
+              height: "100%",
+              flexDirection: "row",
+            }}
           >
-            <Ionicons
-              name="ios-create-outline"
-              size={24}
-              color={theme.primary.white}
-            />
-            <Label1 color={theme.primary.whiteSmoke}>Editar</Label1>
-          </RectButton>
-        </LinearGradient>
-      </Animated.View>
-    );
-  };
+            <RectButton
+              style={[
+                {
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flex: 1,
+                  padding: 16,
+                },
+              ]}
+              onPress={pressHandler}
+            >
+              <Ionicons
+                name="ios-create-outline"
+                size={24}
+                color={theme.primary.white}
+              />
+              <Label1 color={theme.primary.whiteSmoke}>Editar</Label1>
+            </RectButton>
+          </LinearGradient>
+        </Animated.View>
+      );
+    },
+    []
+  );
 
-  const renderRightActions = (
-    progress: Animated.AnimatedInterpolation<number>,
-    _dragAnimatedValue: Animated.AnimatedInterpolation<number>
-  ) => {
-    const trans = progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [100, 0],
-      extrapolate: "clamp",
-    });
+  const renderRightActions = useCallback(
+    (
+      progress: Animated.AnimatedInterpolation<number>,
+      _dragAnimatedValue: Animated.AnimatedInterpolation<number>
+    ) => {
+      const trans = progress.interpolate({
+        inputRange: [0, 1],
+        outputRange: [100, 0],
+        extrapolate: "clamp",
+      });
 
-    const pressHandler = () => {
-      closeSwipeable();
-    };
+      const pressHandler = () => {
+        closeSwipeable();
+      };
 
-    return (
-      <Animated.View style={{ transform: [{ translateX: trans }] }}>
-        <LinearGradient
-          colors={GradientColors.red.colors}
-          style={{
-            width: 100,
-            height: "100%",
-            flexDirection: "row",
-          }}
-        >
-          <RectButton
-            style={[
-              {
-                justifyContent: "center",
-                alignItems: "center",
-                flex: 1,
-                padding: 16,
-              },
-            ]}
-            onPress={pressHandler}
+      return (
+        <Animated.View style={{ transform: [{ translateX: trans }] }}>
+          <LinearGradient
+            colors={GradientColors.red.colors}
+            style={{
+              width: 100,
+              height: "100%",
+              flexDirection: "row",
+            }}
           >
-            <Ionicons
-              name="trash-bin-outline"
-              size={24}
-              color={theme.primary.whiteSmoke}
-            />
-            <Label1 color={theme.primary.whiteSmoke}>Excluir</Label1>
-          </RectButton>
-        </LinearGradient>
-      </Animated.View>
-    );
-  };
+            <RectButton
+              style={[
+                {
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flex: 1,
+                  padding: 16,
+                },
+              ]}
+              onPress={pressHandler}
+            >
+              <Ionicons
+                name="trash-bin-outline"
+                size={24}
+                color={theme.primary.whiteSmoke}
+              />
+              <Label1 color={theme.primary.whiteSmoke}>Excluir</Label1>
+            </RectButton>
+          </LinearGradient>
+        </Animated.View>
+      );
+    },
+    []
+  );
+
   return (
     <Swipeable
       ref={swipeableRowRef}
@@ -138,25 +145,4 @@ const ListComponent: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  row: {
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    flexDirection: "row",
-    padding: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#CCC",
-  },
-  text: {
-    fontSize: 16,
-  },
-  leftAction: {
-    backgroundColor: "#4CAF50",
-    justifyContent: "center",
-    alignItems: "flex-end",
-    flex: 1,
-    paddingLeft: 16,
-  },
-});
-
-export default ListComponent;
+export default memo(ListComponent);

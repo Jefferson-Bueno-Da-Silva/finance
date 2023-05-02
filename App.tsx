@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { ThemeProvider } from "styled-components";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Routes from "./src/routes";
 import { MainContainer } from "./src/styles/Container";
@@ -29,13 +30,15 @@ export default function App() {
   }
 
   return (
-    <View onLayout={onLayoutRootView}>
-      <ThemeProvider theme={defaultTheme}>
-        <MainContainer>
-          <StatusBar style="dark" />
-          <Routes />
-        </MainContainer>
-      </ThemeProvider>
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View onLayout={onLayoutRootView}>
+        <ThemeProvider theme={defaultTheme}>
+          <MainContainer>
+            <StatusBar style="dark" />
+            <Routes />
+          </MainContainer>
+        </ThemeProvider>
+      </View>
+    </GestureHandlerRootView>
   );
 }

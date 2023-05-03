@@ -2,8 +2,6 @@ import styled from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { RectButton } from "react-native-gesture-handler";
 
-import { GradientColors } from "../../../../styles/theme";
-
 export const Container = styled.View`
   width: 100%;
   height: 70px;
@@ -20,9 +18,7 @@ export const ContainerValue = styled.View`
   align-items: center;
 `;
 
-export const CircleIcon = styled(LinearGradient).attrs({
-  colors: GradientColors.green.colors,
-})`
+export const CircleIcon = styled(LinearGradient)`
   height: 38px;
   width: 38px;
   border-radius: 38px;
@@ -30,5 +26,17 @@ export const CircleIcon = styled(LinearGradient).attrs({
   margin-right: 16px;
   align-items: center;
   justify-content: center;
-  elevation: 5;
+`;
+
+export const ButtonContainer = styled(LinearGradient)`
+  width: 100px;
+  height: 100%;
+  flex-direction: row;
+`;
+
+export const Button = styled(RectButton)`
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 16px;
 `;

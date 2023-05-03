@@ -19,28 +19,13 @@ export const defaultTheme: DefaultTheme = {
   commons: {
     error: "#FF5343",
   },
-};
-
-export const GradientColors = {
-  red: {
-    colors: ["#9D0000", "#FF0000"],
-  },
-  purple: {
-    colors: ["#654EA3", "#EAAFC8"],
-  },
-  gray: {
-    colors: ["#313346", "#54566E"],
-  },
-  black: {
-    colors: ["#040404", "#595959"],
-  },
-  white: {
-    colors: ["#FFFFFF", "#C9C9C9"],
-  },
-  green: {
-    colors: ["#00920E", "#52FF00"],
-  },
-  blue: {
-    colors: ["#030088", "#0500FF"],
+  gradientColors: {
+    red: ["#9D0000", "#FF0000"],
+    purple: ["#654EA3", "#EAAFC8"],
+    gray: ["#313346", "#54566E"],
+    black: ["#040404", "#595959"],
+    white: ["#FFFFFF", "#C9C9C9"],
+    green: ["#00920E", "#52FF00"],
+    blue: ["#030088", "#0500FF"],
   },
 };

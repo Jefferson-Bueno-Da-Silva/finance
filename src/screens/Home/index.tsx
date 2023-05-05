@@ -1,11 +1,12 @@
 import React from "react";
 
 import { Container } from "./styles";
-import { ListItens } from "../../components";
+import { GraphicPie, ListItens } from "../../components";
 
 const Home: React.FC = () => {
   return (
     <Container>
+      <GraphicPie />
       <ListItens />
     </Container>
   );

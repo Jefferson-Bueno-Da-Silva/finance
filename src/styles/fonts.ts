@@ -30,6 +30,11 @@ export const Body1 = styled(Text)<TextProps>`
   font-size: 12px;
   color: ${(props) => props.color || props.theme.primary.black};
 `;
+export const Body2 = styled(Text)<TextProps>`
+  font-family: Inter-Bold;
+  font-size: 10px;
+  color: ${(props) => props.color || props.theme.primary.black};
+`;
 export const Label1 = styled(Text)<TextProps>`
   font-family: Inter-Regular;
   font-size: 10px;

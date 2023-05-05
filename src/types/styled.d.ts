@@ -16,6 +16,7 @@ declare module "styled-components" {
       separator: string;
       white: string;
       black: string;
+      darkRed: string;
     };
     commons: {
       error: string;

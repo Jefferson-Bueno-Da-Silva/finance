@@ -15,6 +15,7 @@ export const defaultTheme: DefaultTheme = {
     separator: "rgba(0, 0, 0, 0.1)",
     white: "#F4F4F4",
     black: "rgba(23, 25, 48, 0.7)",
+    darkRed: "rgba(181, 0, 0, 0.3)",
   },
   commons: {
     error: "#FF5343",

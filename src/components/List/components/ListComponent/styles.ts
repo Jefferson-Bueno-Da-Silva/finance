@@ -11,6 +11,7 @@ export const Container = styled.View`
   padding: 16px;
   border-bottom-width: 1px;
   border-bottom-color: ${(props) => props.theme.secondary.separator};
+  background-color: ${(props) => props.theme.primary.white};
 `;
 
 export const ContainerValue = styled.View`

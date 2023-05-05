@@ -13,7 +13,11 @@ import {
   ContainerValue,
 } from "./styles";
 
-const ListComponent: React.FC = () => {
+interface ListComponentProps {
+  debt: boolean;
+}
+
+const ListComponent: React.FC<ListComponentProps> = ({ debt = false }) => {
   const swipeableRowRef = useRef<Swipeable>(null);
   const theme = useTheme();
 
@@ -96,12 +100,15 @@ const ListComponent: React.FC = () => {
       rightThreshold={50}
       renderLeftActions={renderLeftActions}
       renderRightActions={renderRightActions}
+      containerStyle={{ backgroundColor: theme.primary.white, borderRadius: 8 }}
     >
-      <Container>
+      <Container style={{ elevation: 10 }}>
         <ContainerValue>
           <CircleIcon
             style={{ elevation: 5 }}
-            colors={theme.gradientColors.green}
+            colors={
+              debt ? theme.gradientColors.red : theme.gradientColors.green
+            }
           >
             <MaterialIcons
               name="attach-money"

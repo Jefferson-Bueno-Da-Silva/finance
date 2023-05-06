@@ -4,6 +4,7 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import { useTheme } from "styled-components";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
+import { Edit, Money, Trash } from "../../../../assets";
 import { Label1 } from "../../../../styles/fonts";
 import {
   Button,
@@ -44,11 +45,7 @@ const ListComponent: React.FC<ListComponentProps> = ({ debt = false }) => {
         <Animated.View style={{ transform: [{ translateX: trans }] }}>
           <ButtonContainer colors={theme.gradientColors.green}>
             <Button onPress={pressHandler}>
-              <Ionicons
-                name="ios-create-outline"
-                size={24}
-                color={theme.primary.white}
-              />
+              <Edit color={theme.primary.white} />
               <Label1 color={theme.primary.whiteSmoke}>Editar</Label1>
             </Button>
           </ButtonContainer>
@@ -77,11 +74,7 @@ const ListComponent: React.FC<ListComponentProps> = ({ debt = false }) => {
         <Animated.View style={{ transform: [{ translateX: trans }] }}>
           <ButtonContainer colors={theme.gradientColors.red}>
             <Button onPress={pressHandler}>
-              <Ionicons
-                name="trash-bin-outline"
-                size={24}
-                color={theme.primary.whiteSmoke}
-              />
+              <Trash color={theme.primary.whiteSmoke} />
               <Label1 color={theme.primary.whiteSmoke}>Excluir</Label1>
             </Button>
           </ButtonContainer>
@@ -110,11 +103,7 @@ const ListComponent: React.FC<ListComponentProps> = ({ debt = false }) => {
               debt ? theme.gradientColors.red : theme.gradientColors.green
             }
           >
-            <MaterialIcons
-              name="attach-money"
-              size={24}
-              color={theme.primary.whiteSmoke}
-            />
+            <Money color={theme.primary.whiteSmoke} />
           </CircleIcon>
           <Label1>Loren Ipson</Label1>
         </ContainerValue>

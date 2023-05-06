@@ -1,13 +1,13 @@
 import React from "react";
 
+import { FloatButton, GraphicPie, ListItens } from "../../components";
 import { Container } from "./styles";
-import { GraphicPie, ListItens } from "../../components";
 
 const Home: React.FC = () => {
   return (
     <Container>
-      <GraphicPie />
-      <ListItens />
+      <ListItens header={<GraphicPie />} />
+      <FloatButton />
     </Container>
   );
 };

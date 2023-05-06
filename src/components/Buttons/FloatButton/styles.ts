@@ -31,3 +31,14 @@ export const Button = styled(RectButton)`
   align-items: center;
   justify-content: center;
 `;
+
+export const ContainerLabel = styled(LinearGradient)`
+  position: absolute;
+  top: 20%;
+  right: 40px;
+  justify-content: center;
+  padding-left: 8px;
+  height: 25px;
+  width: 60px;
+  border-radius: 8px;
+`;

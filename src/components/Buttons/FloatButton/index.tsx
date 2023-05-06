@@ -7,9 +7,11 @@ import {
   Button,
   Container,
   ContainerAbsolute,
+  ContainerLabel,
   ContainerSecondary,
 } from "./styles";
 import { Money, Plus } from "../../../assets";
+import { Body2 } from "../../../styles/fonts";
 
 const FloatButton: React.FC = () => {
   const rotateButton = useAnimatedRotate();
@@ -24,20 +26,24 @@ const FloatButton: React.FC = () => {
         translateButtonGreen.animateTo({
           translateY: 60,
           opacity: 0,
+          rotate: "-90deg",
         });
         translateButtonRed.animateTo({
           translateY: 120,
           opacity: 0,
+          rotate: "-90deg",
         });
         return "to";
       }
       translateButtonGreen.animateTo({
         translateY: 0,
         opacity: 1,
+        rotate: "0deg",
       });
       translateButtonRed.animateTo({
         translateY: 0,
         opacity: 1,
+        rotate: "0deg",
       });
       return "from";
     });
@@ -49,6 +55,12 @@ const FloatButton: React.FC = () => {
         state={translateButtonRed}
         transition={{ delay: 200, damping: 12 }}
       >
+        <ContainerLabel
+          style={{ elevation: 5 }}
+          colors={theme.gradientColors.red}
+        >
+          <Body2 color={theme.primary.whiteSmoke}>Débitos</Body2>
+        </ContainerLabel>
         <ContainerSecondary
           style={{ elevation: 5 }}
           colors={theme.gradientColors.red}
@@ -59,9 +71,16 @@ const FloatButton: React.FC = () => {
         </ContainerSecondary>
       </MotiView>
       <MotiView
+        style={{ position: "relative" }}
         state={translateButtonGreen}
         transition={{ delay: 100, damping: 12 }}
       >
+        <ContainerLabel
+          style={{ elevation: 5 }}
+          colors={theme.gradientColors.green}
+        >
+          <Body2 color={theme.primary.whiteSmoke}>Renda</Body2>
+        </ContainerLabel>
         <ContainerSecondary
           style={{ elevation: 5 }}
           colors={theme.gradientColors.green}

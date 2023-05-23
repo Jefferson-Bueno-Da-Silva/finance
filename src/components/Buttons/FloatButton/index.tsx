@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTheme } from "styled-components/native";
 import { MotiView, useAnimationState, useDynamicAnimation } from "moti";
 
@@ -12,11 +12,30 @@ import {
 } from "./styles";
 import { Money, Plus } from "../../../assets";
 import { Body2 } from "../../../styles/fonts";
+import { Easing } from "react-native-reanimated";
 
-const FloatButton: React.FC = () => {
+export interface FloatButtonProps {
+  showButton?: boolean;
+}
+
+const FloatButton: React.FC<FloatButtonProps> = ({ showButton = true }) => {
   const rotateButton = useAnimatedRotate();
   const translateButtonGreen = useAnimatedTranslate(60);
   const translateButtonRed = useAnimatedTranslate(120);
+  const [enableContainer, setEnableContainer] = useState(true);
+
+  useEffect(() => {
+    if (showButton) {
+      setEnableContainer(showButton);
+      return;
+    } else {
+      const disable = setTimeout(() => {
+        setEnableContainer(showButton);
+      }, 1000);
+
+      return () => clearTimeout(disable);
+    }
+  }, [showButton]);
 
   const theme = useTheme();
 
@@ -90,18 +109,34 @@ const FloatButton: React.FC = () => {
           </Button>
         </ContainerSecondary>
       </MotiView>
-      <Container style={{ elevation: 10 }} colors={theme.gradientColors.black}>
-        <Button onPress={onPress}>
-          <MotiView
-            state={rotateButton}
-            transition={{
-              type: "spring",
-            }}
+      <MotiView
+        animate={{
+          scale: showButton ? 1 : 0,
+          rotate: showButton ? "0deg" : "180deg",
+        }}
+        transition={{
+          type: "timing",
+          easing: Easing.inOut(Easing.ease),
+        }}
+      >
+        {enableContainer && (
+          <Container
+            style={{ elevation: 10 }}
+            colors={theme.gradientColors.black}
           >
-            <Plus color={theme.primary.whiteSmoke} />
-          </MotiView>
-        </Button>
-      </Container>
+            <Button onPress={onPress}>
+              <MotiView
+                state={rotateButton}
+                transition={{
+                  type: "spring",
+                }}
+              >
+                <Plus color={theme.primary.whiteSmoke} />
+              </MotiView>
+            </Button>
+          </Container>
+        )}
+      </MotiView>
     </ContainerAbsolute>
   );
 };

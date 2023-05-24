@@ -16,9 +16,15 @@ import { Easing } from "react-native-reanimated";
 
 export interface FloatButtonProps {
   showButton?: boolean;
+  onPressGreen: () => void;
+  onPressRed: () => void;
 }
 
-const FloatButton: React.FC<FloatButtonProps> = ({ showButton = true }) => {
+const FloatButton: React.FC<FloatButtonProps> = ({
+  showButton = true,
+  onPressGreen,
+  onPressRed,
+}) => {
   const rotateButton = useAnimatedRotate();
   const translateButtonGreen = useAnimatedTranslate(60);
   const translateButtonRed = useAnimatedTranslate(120);
@@ -29,6 +35,22 @@ const FloatButton: React.FC<FloatButtonProps> = ({ showButton = true }) => {
       setEnableContainer(showButton);
       return;
     } else {
+      rotateButton.transitionTo((prevState) => {
+        if (prevState === "from") {
+          translateButtonGreen.animateTo({
+            translateY: 60,
+            opacity: 0,
+            rotate: "-90deg",
+          });
+          translateButtonRed.animateTo({
+            translateY: 120,
+            opacity: 0,
+            rotate: "-90deg",
+          });
+          return "to";
+        }
+        return "to";
+      });
       const disable = setTimeout(() => {
         setEnableContainer(showButton);
       }, 1000);
@@ -84,7 +106,7 @@ const FloatButton: React.FC<FloatButtonProps> = ({ showButton = true }) => {
           style={{ elevation: 5 }}
           colors={theme.gradientColors.red}
         >
-          <Button onPress={onPress}>
+          <Button onPress={onPressRed}>
             <Money color={theme.primary.whiteSmoke} />
           </Button>
         </ContainerSecondary>
@@ -104,7 +126,7 @@ const FloatButton: React.FC<FloatButtonProps> = ({ showButton = true }) => {
           style={{ elevation: 5 }}
           colors={theme.gradientColors.green}
         >
-          <Button onPress={onPress}>
+          <Button onPress={onPressGreen}>
             <Money color={theme.primary.whiteSmoke} />
           </Button>
         </ContainerSecondary>

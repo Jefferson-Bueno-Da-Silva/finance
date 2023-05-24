@@ -13,8 +13,8 @@ export const ContainerAbsolute = styled(View)`
 `;
 
 export const Container = styled(LinearGradient)`
-  height: 70px;
-  width: 70px;
+  height: 60px;
+  width: 60px;
   border-radius: 50px;
 `;
 

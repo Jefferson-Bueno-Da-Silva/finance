@@ -1,4 +1,5 @@
 import React from "react";
+import { Host } from "react-native-portalize";
 
 import { SimpleHeader } from "../components";
 
@@ -8,10 +9,10 @@ import { defaultTheme } from "../styles/theme";
 
 const Routes: React.FC = () => {
   return (
-    <>
+    <Host>
       <SimpleHeader />
       <Home />
-    </>
+    </Host>
   );
 };
 

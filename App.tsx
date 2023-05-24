@@ -30,15 +30,13 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View onLayout={onLayoutRootView}>
-        <ThemeProvider theme={defaultTheme}>
-          <MainContainer>
-            <StatusBar style="dark" />
-            <Routes />
-          </MainContainer>
-        </ThemeProvider>
-      </View>
+    <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <ThemeProvider theme={defaultTheme}>
+        <MainContainer>
+          <StatusBar style="dark" />
+          <Routes />
+        </MainContainer>
+      </ThemeProvider>
     </GestureHandlerRootView>
   );
 }

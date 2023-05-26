@@ -46,9 +46,7 @@ const ListItens: React.FC<ListItens> = ({ header, onScroll }) => {
           <Body1>R$ {section.total.toFixed(2).replace(".", ",")}</Body1>
         </ContentValue>
       )}
-      renderItem={({ item, section, index }) => (
-        <ListComponent debt={section.type === "debt"} />
-      )}
+      renderItem={({ item, section, index }) => <ListComponent />}
     />
   );
 };

@@ -1,26 +1,29 @@
-import React, { useRef, useCallback, memo } from "react";
+import React, { useRef, useCallback, memo, useState } from "react";
 import { Animated } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { useTheme } from "styled-components";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-import { Edit, Money, Trash } from "../../../../assets";
+import { CheckIcon, Edit, Trash } from "../../../../assets";
 import { Label1 } from "../../../../styles/fonts";
 import {
   Button,
   ButtonContainer,
-  CircleIcon,
+  ButtonContent,
+  CheckBoxButton,
+  Completed,
   Container,
   ContainerValue,
+  TextLeft,
 } from "./styles";
 
-interface ListComponentProps {
-  debt: boolean;
-}
-
-const ListComponent: React.FC<ListComponentProps> = ({ debt = false }) => {
+const ListComponent: React.FC = () => {
   const swipeableRowRef = useRef<Swipeable>(null);
   const theme = useTheme();
+  const [checked, setChecked] = useState(false);
+
+  const toggleCheck = useCallback(() => {
+    setChecked((old) => !old);
+  }, [setChecked]);
 
   const closeSwipeable = useCallback(() => {
     swipeableRowRef.current?.close();
@@ -96,18 +99,16 @@ const ListComponent: React.FC<ListComponentProps> = ({ debt = false }) => {
       containerStyle={{ backgroundColor: theme.primary.white, borderRadius: 8 }}
     >
       <Container style={{ elevation: 10 }}>
-        <ContainerValue>
-          <CircleIcon
-            style={{ elevation: 5 }}
-            colors={
-              debt ? theme.gradientColors.red : theme.gradientColors.green
-            }
-          >
-            <Money color={theme.primary.whiteSmoke} />
-          </CircleIcon>
-          <Label1>Loren Ipson</Label1>
-        </ContainerValue>
-        <Label1>R$ 130.00</Label1>
+        <ButtonContent onPress={toggleCheck}>
+          <ContainerValue>
+            <CheckBoxButton>
+              {checked && <CheckIcon color={theme.secondary.black} />}
+            </CheckBoxButton>
+            <Label1>Loren Ipson</Label1>
+          </ContainerValue>
+          <Label1>R$ 130.00</Label1>
+          {checked && <Completed />}
+        </ButtonContent>
       </Container>
     </Swipeable>
   );

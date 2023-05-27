@@ -6,10 +6,12 @@ import React, {
   useImperativeHandle,
   useState,
 } from "react";
+import { KeyboardAvoidingView, ScrollView, Text, View } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { Portal } from "react-native-portalize";
 
 import { Button } from "../../Buttons";
+import { FormCreate } from "../../Forms";
 import { Header1 } from "../../../styles/fonts";
 import { Container, FooterContainer, HeaderContainer } from "./styles";
 
@@ -61,19 +63,19 @@ const BigModal = forwardRef<BigModalRefs, BigModalProps>((_, ref) => {
         ref={modalizeRef}
         handlePosition="inside"
         adjustToContentHeight
-        childrenStyle={{ height: "95%" }}
+        disableScrollIfPossible={false}
         HeaderComponent={
           <HeaderContainer>
             <Header1>{title}</Header1>
           </HeaderContainer>
         }
-        FooterComponent={
-          <FooterContainer>
-            <Button label="Cancelar" onPress={handleCancel} secondary error />
-            <Button label="Confirmar" onPress={handleConfirm} />
-          </FooterContainer>
-        }
-      />
+      >
+        <FormCreate />
+        <FooterContainer>
+          <Button label="Cancelar" onPress={handleCancel} secondary error />
+          <Button label="Confirmar" onPress={handleConfirm} />
+        </FooterContainer>
+      </Modalize>
     </Portal>
   );
 });

@@ -46,8 +46,6 @@ const FormCreate: React.FC<FormCreateProps> = ({ onEnd }) => {
     [onEnd]
   );
 
-  const handleSelectedValue = useCallback((value: option) => {}, []);
-
   return (
     <Container>
       <TextInput

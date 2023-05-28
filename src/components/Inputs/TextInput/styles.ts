@@ -1,3 +1,4 @@
+import { TextInput } from "react-native";
 import styled, { css } from "styled-components/native";
 
 export interface ContainerProps {
@@ -13,7 +14,7 @@ export const Container = styled.View<ContainerProps>`
   margin-bottom: 16px;
 `;
 
-export interface InputContainerProps {
+interface InputContainerProps {
   selected?: boolean;
   error?: boolean;
 }
@@ -49,9 +50,7 @@ export const ErrorContainer = styled.View`
   margin-top: 8px;
 `;
 
-export const Input = styled.TextInput.attrs((props) => ({
-  placeholderTextColor: props.theme.primary.gray,
-}))`
+export const Input = styled(TextInput)`
   flex: 1;
   padding: 13px 0px;
 `;

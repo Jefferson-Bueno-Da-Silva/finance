@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { TextInputProps as TextProps } from "react-native";
 import { useTheme } from "styled-components/native";
 
 import { CalendarOutline, ErrorCircleOutline } from "../../../assets";
@@ -9,21 +10,22 @@ import {
   IconContainer,
   Input,
   InputContainer,
-  InputContainerProps,
 } from "./styles";
 import { Body1 } from "../../../styles/fonts";
 
-interface TextInputProps extends InputContainerProps, ContainerProps {
-  label?: string;
-  errorMessage?: string;
-  icon?: boolean;
-}
+export type TextInputProps = TextProps &
+  ContainerProps & {
+    label?: string;
+    errorMessage?: string;
+    icon?: boolean;
+  };
 
 const TextInput: React.FC<TextInputProps> = ({
   icon = false,
   disabled = false,
   label = "",
   errorMessage = "",
+  ...props
 }) => {
   const theme = useTheme();
   const [selected, setSelected] = useState(false);
@@ -47,6 +49,8 @@ const TextInput: React.FC<TextInputProps> = ({
           </IconContainer>
         )}
         <Input
+          {...props}
+          placeholderTextColor={theme.primary.gray}
           editable={!disabled}
           placeholder="Placeholder"
           onFocus={() => setSelected(true)}

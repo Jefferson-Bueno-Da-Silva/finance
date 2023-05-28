@@ -1,7 +1,10 @@
 import * as yup from "yup";
 
 export const validation = yup.object({
-  name: yup.string().required("Informe um apelido para a sua renda ou débito"),
+  name: yup
+    .string()
+    .max(50, "Esse nome é muito grande,por favor use um nome\nmenor")
+    .required("Informe um apelido para a sua renda ou débito"),
   value: yup
     .string()
     .test("value", "O valor é obrigatório", (value) => {

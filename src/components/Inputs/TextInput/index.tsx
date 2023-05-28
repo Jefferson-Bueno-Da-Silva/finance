@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { TextInputProps as TextProps } from "react-native";
+import { MaskInputProps } from "react-native-mask-input";
+
 import { useTheme } from "styled-components/native";
 
 import { CalendarOutline, ErrorCircleOutline } from "../../../assets";
@@ -12,8 +13,9 @@ import {
   InputContainer,
 } from "./styles";
 import { Body1 } from "../../../styles/fonts";
+import { MessageError } from "../../Alerts";
 
-export type TextInputProps = TextProps &
+export type TextInputProps = MaskInputProps &
   ContainerProps & {
     label?: string;
     errorMessage?: string;
@@ -57,14 +59,7 @@ const TextInput: React.FC<TextInputProps> = ({
           onBlur={() => setSelected(false)}
         />
       </InputContainer>
-      {!!errorMessage && (
-        <ErrorContainer>
-          <ErrorCircleOutline color={theme.commons.error} />
-          <Body1 style={{ marginLeft: 4 }} color={theme.commons.error}>
-            {errorMessage}
-          </Body1>
-        </ErrorContainer>
-      )}
+      {!!errorMessage && <MessageError errorMessage={errorMessage} />}
     </Container>
   );
 };

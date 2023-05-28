@@ -13,7 +13,11 @@ const ControlledInput: React.FC<Props> = ({ control, name, ...rest }) => {
       name={name}
       control={control}
       render={({ field: { onChange, value } }) => (
-        <TextInput onChangeText={onChange} value={value} {...rest} />
+        <TextInput
+          onChangeText={(masked) => onChange(masked)}
+          value={value}
+          {...rest}
+        />
       )}
     />
   );

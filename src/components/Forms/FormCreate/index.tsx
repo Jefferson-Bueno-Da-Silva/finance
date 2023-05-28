@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Masks } from "react-native-mask-input";
 
 import { MultipleChoiceInput } from "../../Inputs";
 import { Container, FooterContainer } from "./styles";
@@ -22,6 +23,7 @@ type Inputs = {
   name: string;
   value: number;
   date: Date;
+  monthlyRepeat: boolean;
 };
 
 const FormCreate: React.FC<FormCreateProps> = ({ onEnd }) => {
@@ -61,6 +63,8 @@ const FormCreate: React.FC<FormCreateProps> = ({ onEnd }) => {
         errorMessage={errors.value?.message}
         label="Valor"
         keyboardType="numeric"
+        mask={Masks.BRL_CURRENCY}
+        maskAutoComplete
       />
       <ControlledInput
         name="date"
@@ -68,8 +72,16 @@ const FormCreate: React.FC<FormCreateProps> = ({ onEnd }) => {
         errorMessage={errors.date?.message}
         label="Data"
         icon
+        keyboardType="number-pad"
+        mask={Masks.DATE_DDMMYYYY}
+        maskAutoComplete
       />
-      <MultipleChoiceInput options={data} onPress={handleSelectedValue} />
+      <MultipleChoiceInput
+        name="monthlyRepeat"
+        control={control}
+        options={data}
+        errorMessage={errors.monthlyRepeat?.message}
+      />
       <FooterContainer>
         <Button label="Cancelar" onPress={handleCancel} secondary error />
         <Button label="Confirmar" onPress={handleSubmit(handleConfirm)} />

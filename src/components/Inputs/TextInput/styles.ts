@@ -1,5 +1,6 @@
-import { TextInput } from "react-native";
 import styled, { css } from "styled-components/native";
+import { TextInput } from "react-native";
+import MaskInput from "react-native-mask-input";
 
 export interface ContainerProps {
   disabled?: boolean;
@@ -50,7 +51,7 @@ export const ErrorContainer = styled.View`
   margin-top: 8px;
 `;
 
-export const Input = styled(TextInput)`
+export const Input = styled(MaskInput)`
   flex: 1;
   padding: 13px 0px;
 `;

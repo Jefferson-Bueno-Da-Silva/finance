@@ -1,2 +1,4 @@
 import TextInput from "./TextInput";
-export { TextInput };
+import MultipleChoiceInput from "./MultipleChoiceInput";
+
+export { TextInput, MultipleChoiceInput };

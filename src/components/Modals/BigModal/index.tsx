@@ -1,19 +1,16 @@
 import React, {
-  useEffect,
   useRef,
   forwardRef,
   useCallback,
   useImperativeHandle,
   useState,
 } from "react";
-import { KeyboardAvoidingView, ScrollView, Text, View } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { Portal } from "react-native-portalize";
 
-import { Button } from "../../Buttons";
 import { FormCreate } from "../../Forms";
 import { Header1 } from "../../../styles/fonts";
-import { Container, FooterContainer, HeaderContainer } from "./styles";
+import { HeaderContainer } from "./styles";
 
 type BigModalProps = {};
 
@@ -49,14 +46,6 @@ const BigModal = forwardRef<BigModalRefs, BigModalProps>((_, ref) => {
     [open, close]
   );
 
-  const handleCancel = useCallback(() => {
-    close();
-  }, [close]);
-
-  const handleConfirm = useCallback(() => {
-    close();
-  }, [close]);
-
   return (
     <Portal>
       <Modalize
@@ -70,11 +59,7 @@ const BigModal = forwardRef<BigModalRefs, BigModalProps>((_, ref) => {
           </HeaderContainer>
         }
       >
-        <FormCreate />
-        <FooterContainer>
-          <Button label="Cancelar" onPress={handleCancel} secondary error />
-          <Button label="Confirmar" onPress={handleConfirm} />
-        </FooterContainer>
+        <FormCreate onEnd={close} />
       </Modalize>
     </Portal>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MaskInputProps } from "react-native-mask-input";
-
+import { Control, Controller } from "react-hook-form";
 import { useTheme } from "styled-components/native";
 
 import { CalendarOutline, ErrorCircleOutline } from "../../../assets";
@@ -20,9 +20,13 @@ export type TextInputProps = MaskInputProps &
     label?: string;
     errorMessage?: string;
     icon?: boolean;
+    control: Control<any>;
+    name: string;
   };
 
 const TextInput: React.FC<TextInputProps> = ({
+  name,
+  control,
   icon = false,
   disabled = false,
   label = "",
@@ -32,35 +36,45 @@ const TextInput: React.FC<TextInputProps> = ({
   const theme = useTheme();
   const [selected, setSelected] = useState(false);
   return (
-    <Container disabled={disabled}>
-      {!!label && (
-        <Body1
-          style={{ textTransform: "capitalize" }}
-          color={theme.secondary.black}
-        >
-          {label}
-        </Body1>
-      )}
-      <InputContainer error={!!errorMessage} selected={selected}>
-        {icon && (
-          <IconContainer>
-            <CalendarOutline
-              size={24}
-              color={selected ? theme.primary.cleanGreen : theme.primary.gray}
+    <Controller
+      name={name}
+      control={control}
+      render={({ field: { onChange, value } }) => (
+        <Container disabled={disabled}>
+          {!!label && (
+            <Body1
+              style={{ textTransform: "capitalize" }}
+              color={theme.secondary.black}
+            >
+              {label}
+            </Body1>
+          )}
+          <InputContainer error={!!errorMessage} selected={selected}>
+            {icon && (
+              <IconContainer>
+                <CalendarOutline
+                  size={24}
+                  color={
+                    selected ? theme.primary.cleanGreen : theme.primary.gray
+                  }
+                />
+              </IconContainer>
+            )}
+            <Input
+              {...props}
+              value={value}
+              onChangeText={(masked) => onChange(masked)}
+              placeholderTextColor={theme.primary.gray}
+              editable={!disabled}
+              placeholder="Placeholder"
+              onFocus={() => setSelected(true)}
+              onBlur={() => setSelected(false)}
             />
-          </IconContainer>
-        )}
-        <Input
-          {...props}
-          placeholderTextColor={theme.primary.gray}
-          editable={!disabled}
-          placeholder="Placeholder"
-          onFocus={() => setSelected(true)}
-          onBlur={() => setSelected(false)}
-        />
-      </InputContainer>
-      {!!errorMessage && <MessageError errorMessage={errorMessage} />}
-    </Container>
+          </InputContainer>
+          {!!errorMessage && <MessageError errorMessage={errorMessage} />}
+        </Container>
+      )}
+    />
   );
 };
 

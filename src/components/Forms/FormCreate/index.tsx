@@ -3,11 +3,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Masks } from "react-native-mask-input";
 
-import { MultipleChoiceInput } from "../../Inputs";
+import { MultipleChoiceInput, TextInput } from "../../Inputs";
 import { Container, FooterContainer } from "./styles";
 import { option } from "../../Inputs/MultipleChoiceInput";
 import { Button } from "../../Buttons";
-import ControlledInput from "../../ControlledInput";
 import { validation } from "./validation";
 
 const data = [
@@ -51,13 +50,13 @@ const FormCreate: React.FC<FormCreateProps> = ({ onEnd }) => {
 
   return (
     <Container>
-      <ControlledInput
+      <TextInput
         name="name"
         control={control}
         errorMessage={errors.name?.message}
         label="nome"
       />
-      <ControlledInput
+      <TextInput
         name="value"
         control={control}
         errorMessage={errors.value?.message}
@@ -66,7 +65,7 @@ const FormCreate: React.FC<FormCreateProps> = ({ onEnd }) => {
         mask={Masks.BRL_CURRENCY}
         maskAutoComplete
       />
-      <ControlledInput
+      <TextInput
         name="date"
         control={control}
         errorMessage={errors.date?.message}

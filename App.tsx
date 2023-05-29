@@ -5,10 +5,12 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { ThemeProvider } from "styled-components";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Provider } from "react-redux";
 
 import Routes from "./src/routes";
 import { MainContainer } from "./src/styles/Container";
 import { defaultTheme } from "./src/styles/theme";
+import { store } from "./src/redux/store";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -32,10 +34,12 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <ThemeProvider theme={defaultTheme}>
-        <MainContainer>
-          <StatusBar style="dark" />
-          <Routes />
-        </MainContainer>
+        <Provider store={store}>
+          <MainContainer>
+            <StatusBar style="dark" />
+            <Routes />
+          </MainContainer>
+        </Provider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );

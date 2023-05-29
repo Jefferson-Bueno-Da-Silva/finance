@@ -4,17 +4,13 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from "react-native";
+import uuid from "react-native-uuid";
 
 import ListComponent from "../components/ListComponent";
 import { Body1, Header4 } from "../../../styles/fonts";
 import { Container, ContentValue, ListContainer } from "./styles";
 import { Masks, formatWithMask } from "react-native-mask-input";
-
-type data = {
-  label: string;
-  amount: number;
-  checked: boolean;
-};
+import { ListData } from "../../../interfaces";
 
 interface ListItens {
   header: JSX.Element;
@@ -24,25 +20,31 @@ interface ListItens {
 }
 
 const ListItens: React.FC<ListItens> = ({ header, onScroll }) => {
-  const inputData: data[] = [
-    { label: "Loren", amount: 13.1, checked: false },
-    { label: "Ipson", amount: 130.0, checked: false },
-    { label: "teste", amount: 1200.25, checked: false },
+  const inputData: ListData[] = [
+    { id: uuid.v4(), label: "Loren", amount: 13.1, checked: false },
+    { id: uuid.v4(), label: "Ipson", amount: 130.0, checked: false },
+    { id: uuid.v4(), label: "teste", amount: 1200.25, checked: false },
   ];
 
-  const outputData: data[] = [
-    { label: "sophya", amount: 30.0, checked: false },
-    { label: "Jefferson", amount: 900.0, checked: false },
-    { label: "teste teste", amount: 800.0, checked: false },
-    { label: "teste de um texto longo", amount: 200.0, checked: false },
+  const outputData: ListData[] = [
+    { id: uuid.v4(), label: "sophya", amount: 30.0, checked: false },
+    { id: uuid.v4(), label: "Jefferson", amount: 900.0, checked: false },
+    { id: uuid.v4(), label: "teste teste", amount: 800.0, checked: false },
     {
+      id: uuid.v4(),
+      label: "teste de um texto longo",
+      amount: 200.0,
+      checked: false,
+    },
+    {
+      id: uuid.v4(),
       label: "Lorem ipsum dolor debitis rerum neque ducimus.99",
       amount: 130.0,
       checked: false,
     },
   ];
 
-  const getTotal = useCallback((data: data[]) => {
+  const getTotal = useCallback((data: ListData[]) => {
     return data.reduce((acc, cur) => {
       return acc + cur.amount;
     }, 0);

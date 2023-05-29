@@ -36,63 +36,57 @@ const ListComponent: React.FC<ItemComponent> = ({ label, amount, checked }) => {
     swipeableRowRef.current?.close();
   }, [swipeableRowRef]);
 
-  const renderLeftActions = useCallback(
-    (
-      progress: Animated.AnimatedInterpolation<number>,
-      _dragAnimatedValue: Animated.AnimatedInterpolation<number>
-    ) => {
-      const trans = progress.interpolate({
-        inputRange: [0, 1],
-        outputRange: [-100, 0],
-        extrapolate: "clamp",
-      });
+  const renderLeftActions = (
+    progress: Animated.AnimatedInterpolation<number>,
+    _dragAnimatedValue: Animated.AnimatedInterpolation<number>
+  ) => {
+    const trans = progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [-100, 0],
+      extrapolate: "clamp",
+    });
 
-      const pressHandler = () => {
-        closeSwipeable();
-      };
+    const pressHandler = () => {
+      closeSwipeable();
+    };
 
-      return (
-        <Animated.View style={{ transform: [{ translateX: trans }] }}>
-          <ButtonContainer colors={theme.gradientColors.green}>
-            <Button onPress={pressHandler}>
-              <Edit color={theme.primary.white} />
-              <Label1 color={theme.primary.whiteSmoke}>Editar</Label1>
-            </Button>
-          </ButtonContainer>
-        </Animated.View>
-      );
-    },
-    []
-  );
+    return (
+      <Animated.View style={{ transform: [{ translateX: trans }] }}>
+        <ButtonContainer colors={theme.gradientColors.green}>
+          <Button onPress={pressHandler}>
+            <Edit color={theme.primary.white} />
+            <Label1 color={theme.primary.whiteSmoke}>Editar</Label1>
+          </Button>
+        </ButtonContainer>
+      </Animated.View>
+    );
+  };
 
-  const renderRightActions = useCallback(
-    (
-      progress: Animated.AnimatedInterpolation<number>,
-      _dragAnimatedValue: Animated.AnimatedInterpolation<number>
-    ) => {
-      const trans = progress.interpolate({
-        inputRange: [0, 1],
-        outputRange: [100, 0],
-        extrapolate: "clamp",
-      });
+  const renderRightActions = (
+    progress: Animated.AnimatedInterpolation<number>,
+    _dragAnimatedValue: Animated.AnimatedInterpolation<number>
+  ) => {
+    const trans = progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [100, 0],
+      extrapolate: "clamp",
+    });
 
-      const pressHandler = () => {
-        closeSwipeable();
-      };
+    const pressHandler = () => {
+      closeSwipeable();
+    };
 
-      return (
-        <Animated.View style={{ transform: [{ translateX: trans }] }}>
-          <ButtonContainer colors={theme.gradientColors.red}>
-            <Button onPress={pressHandler}>
-              <Trash color={theme.primary.whiteSmoke} />
-              <Label1 color={theme.primary.whiteSmoke}>Excluir</Label1>
-            </Button>
-          </ButtonContainer>
-        </Animated.View>
-      );
-    },
-    []
-  );
+    return (
+      <Animated.View style={{ transform: [{ translateX: trans }] }}>
+        <ButtonContainer colors={theme.gradientColors.red}>
+          <Button onPress={pressHandler}>
+            <Trash color={theme.primary.whiteSmoke} />
+            <Label1 color={theme.primary.whiteSmoke}>Excluir</Label1>
+          </Button>
+        </ButtonContainer>
+      </Animated.View>
+    );
+  };
 
   return (
     <Swipeable

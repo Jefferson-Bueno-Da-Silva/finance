@@ -8,9 +8,9 @@ import { Container, Content } from "./styles";
 import { LinearGradient } from "expo-linear-gradient";
 
 const incoming = 2000;
-const debt = 900;
+const invoice = 900;
 
-const data = [debt, incoming - debt];
+const data = [invoice, incoming - invoice];
 
 function CustomSlice(props: SliceProps) {
   const sliceOverride = {
@@ -51,7 +51,7 @@ const Pie: React.FC = () => {
         </Header2>
         <Body2>Débito</Body2>
         <Header3 color={theme.primary.darkRed}>
-          R$ {debt.toFixed(2).replace(".", ",")}
+          R$ {invoice.toFixed(2).replace(".", ",")}
         </Header3>
       </Content>
     </Container>

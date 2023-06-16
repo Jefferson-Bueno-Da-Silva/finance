@@ -28,23 +28,21 @@ const MultipleChoiceInput: React.FC<MultipleChoiceInputProps> = ({
   name,
 }) => {
   const theme = useTheme();
-  const [selected, setSelected] = useState<option>();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value } }) => (
+      render={({ field: { onChange, value: valueField } }) => (
         <Container>
           <Body1>Repetir mensalmente ?</Body1>
           {options.map(({ value, label }, index) => (
             <RenderValue
               key={label}
               onPress={(op) => {
-                setSelected(op);
                 onChange(op.value);
               }}
-              active={value === selected?.value}
+              active={value === valueField}
               value={value}
               label={label}
               theme={theme}

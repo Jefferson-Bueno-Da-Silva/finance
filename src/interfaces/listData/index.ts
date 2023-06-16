@@ -3,6 +3,8 @@ export default interface ListData {
   label: string;
   amount: number;
   checked: boolean;
+  date: string;
+  monthlyRepeat: boolean;
 }
 
 export type TypeData = "invoice" | "income";

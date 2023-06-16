@@ -6,21 +6,24 @@ import {
   SectionListData,
 } from "react-native";
 
-import ListComponent from "../components/ListComponent";
+import ListComponent, {
+  onPressLeft,
+  onPressRight,
+} from "../components/ListComponent";
 import { Body1, Header4 } from "../../../styles/fonts";
-import { Container, ContentValue, ListContainer } from "./styles";
+import { ContentValue } from "./styles";
 import { Masks, formatWithMask } from "react-native-mask-input";
-import { ListData } from "../../../interfaces";
+import { ListData, TypeData } from "../../../interfaces";
 
 interface ListItens {
-  onPressLeft: (value: ListData) => void;
-  onPressRight: (value: ListData) => void;
+  onPressLeft: onPressLeft;
+  onPressRight: onPressRight;
   data: SectionListData<
     ListData,
     {
       title: string;
       total: number;
-      type: string;
+      type: TypeData;
       data: ListData[];
     }
   >[];
@@ -41,7 +44,7 @@ const ListItens: React.FC<ListItens> = ({
     <SectionList
       onScroll={onScroll}
       horizontal={false}
-      sections={data}
+      sections={data.filter((section) => section.data.length > 0)}
       contentContainerStyle={{
         padding: 16,
         gap: 8,
@@ -63,7 +66,8 @@ const ListItens: React.FC<ListItens> = ({
       )}
       renderItem={({ item, section, index }) => (
         <ListComponent
-          {...item}
+          data={item}
+          type={section.type}
           onPressLeft={onPressLeft}
           onPressRight={onPressRight}
         />

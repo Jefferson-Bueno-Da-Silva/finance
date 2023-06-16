@@ -6,9 +6,12 @@ import { ListData, TypeData } from "../../interfaces";
 import { FloatButton, GraphicPie, ListItens, BigModal } from "../../components";
 import { BigModalRefs } from "../../components/Modals/BigModal";
 import { Container } from "./styles";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const Home: React.FC = () => {
   const bigModalRef = useRef<BigModalRefs>(null);
+  const { income, invoice } = useSelector((state: RootState) => state);
   const [showButton, setShowButton] = useState<boolean>(true);
 
   const onFloatButtonVisible = (
@@ -19,34 +22,12 @@ const Home: React.FC = () => {
 
   const handleOpenModal = useCallback(
     (text: TypeData, data?: ListData) => {
+      console.log(text, data);
+
       bigModalRef.current?.open(text, data);
     },
     [bigModalRef]
   );
-
-  const inputData: ListData[] = [
-    { id: uuid.v4(), label: "Loren", amount: 13.1, checked: false },
-    { id: uuid.v4(), label: "Ipson", amount: 130.0, checked: false },
-    { id: uuid.v4(), label: "teste", amount: 1200.25, checked: false },
-  ];
-
-  const outputData: ListData[] = [
-    { id: uuid.v4(), label: "sophya", amount: 30.0, checked: false },
-    { id: uuid.v4(), label: "Jefferson", amount: 900.0, checked: false },
-    { id: uuid.v4(), label: "teste teste", amount: 800.0, checked: false },
-    {
-      id: uuid.v4(),
-      label: "teste de um texto longo",
-      amount: 200.0,
-      checked: false,
-    },
-    {
-      id: uuid.v4(),
-      label: "Lorem ipsum dolor debitis rerum neque ducimus.99",
-      amount: 130.0,
-      checked: false,
-    },
-  ];
 
   const getTotal = useCallback((data: ListData[]) => {
     return data.reduce((acc, cur) => {
@@ -56,23 +37,23 @@ const Home: React.FC = () => {
 
   const inputs = {
     title: "Entrada",
-    total: getTotal(inputData),
-    type: "income",
-    data: inputData,
+    total: getTotal(income),
+    type: "income" as TypeData,
+    data: income,
   };
 
   const outputs = {
     title: "Saídas",
-    total: getTotal(outputData),
-    type: "debt",
-    data: outputData,
+    total: getTotal(invoice),
+    type: "invoice" as TypeData,
+    data: invoice,
   };
 
   return (
     <Container>
       <ListItens
         data={[inputs, outputs]}
-        onPressLeft={() => handleOpenModal("income")}
+        onPressLeft={(type, data) => handleOpenModal(type, data)}
         onPressRight={() => {}}
         onScroll={onFloatButtonVisible}
         header={<GraphicPie />}

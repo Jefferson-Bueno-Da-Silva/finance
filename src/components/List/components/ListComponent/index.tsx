@@ -3,7 +3,11 @@ import { Animated } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { useTheme } from "styled-components";
 import { formatWithMask, Masks } from "react-native-mask-input";
+import { useDispatch } from "react-redux";
 
+import { editIncome } from "../../../../redux/incomeSlice";
+import { editInvoice } from "../../../../redux/invoiceSlice";
+import { ListData, TypeData } from "../../../../interfaces";
 import { CheckIcon, Edit, Trash } from "../../../../assets";
 import { Label1 } from "../../../../styles/fonts";
 import {
@@ -14,40 +18,51 @@ import {
   Completed,
   Container,
   ContainerValue,
-  TextLeft,
 } from "./styles";
-import { ListData } from "../../../../interfaces";
 
-export interface ItemComponent extends ListData {
-  onPressLeft: (value: ListData) => void;
-  onPressRight: (value: ListData) => void;
+export type onPressLeft = (type: TypeData, value: ListData) => void;
+export type onPressRight = (value: ListData) => void;
+
+export interface ItemComponent {
+  data: ListData;
+  onPressLeft: onPressLeft;
+  onPressRight: onPressRight;
+  type: TypeData;
 }
 
 const ListComponent: React.FC<ItemComponent> = ({
-  id,
-  label,
-  amount,
-  checked,
+  data,
   onPressLeft,
   onPressRight,
+  type,
 }) => {
   const swipeableRowRef = useRef<Swipeable>(null);
+  const dispatch = useDispatch();
   const theme = useTheme();
 
   const closeSwipeable = useCallback(() => {
     swipeableRowRef.current?.close();
   }, [swipeableRowRef]);
 
-  const toggleCheck = useCallback(() => {}, []);
+  const toggleCheck = useCallback(() => {
+    if (type === "income") {
+      dispatch(editIncome({ ...data, checked: !data.checked }));
+    }
+
+    if (type === "invoice") {
+      dispatch(editInvoice({ ...data, checked: !data.checked }));
+    }
+  }, [data, type]);
+
   const editData = useCallback(() => {
     closeSwipeable();
-    onPressLeft({ id, label, amount, checked });
-  }, []);
+    onPressLeft(type, data);
+  }, [type, data]);
 
   const deleteData = useCallback(() => {
     closeSwipeable();
-    onPressRight({ id, label, amount, checked });
-  }, []);
+    onPressRight(data);
+  }, [data]);
 
   const renderLeftActions = (
     progress: Animated.AnimatedInterpolation<number>,
@@ -108,20 +123,20 @@ const ListComponent: React.FC<ItemComponent> = ({
         <ButtonContent onPress={toggleCheck}>
           <ContainerValue>
             <CheckBoxButton>
-              {checked && <CheckIcon color={theme.secondary.black} />}
+              {data.checked && <CheckIcon color={theme.secondary.black} />}
             </CheckBoxButton>
-            <Label1>{label}</Label1>
+            <Label1>{data.label}</Label1>
           </ContainerValue>
           <Label1>
             {
               formatWithMask({
-                text: amount.toFixed(2).toString(),
+                text: data.amount.toFixed(2).toString(),
                 maskAutoComplete: true,
                 mask: Masks.BRL_CURRENCY,
               }).masked
             }
           </Label1>
-          {checked && <Completed />}
+          {data.checked && <Completed />}
         </ButtonContent>
       </Container>
     </Swipeable>

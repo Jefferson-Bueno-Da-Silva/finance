@@ -1,32 +1,45 @@
 import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Masks } from "react-native-mask-input";
+import { Masks, formatWithMask } from "react-native-mask-input";
+import uuid from "react-native-uuid";
 
 import { MultipleChoiceInput, TextInput } from "../../Inputs";
 import { Container, FooterContainer } from "./styles";
 import { option } from "../../Inputs/MultipleChoiceInput";
 import { Button } from "../../Buttons";
 import { validation } from "./validation";
+import { ListData, TypeData } from "../../../interfaces";
+import { addIncome, editIncome } from "../../../redux/incomeSlice";
+import moment from "moment";
+import { useDispatch } from "react-redux";
+import { addInvoice, editInvoice } from "../../../redux/invoiceSlice";
 
 const data = [
   { label: "Sim", value: true },
   { label: "Não", value: false },
 ];
 
-type Inputs = {
+export type Inputs = {
+  id?: string | number[];
   name: string;
-  value: number;
-  date: Date;
+  value: string;
+  date: string;
   monthlyRepeat: boolean;
 };
 
 interface FormCreateProps {
+  typeData: TypeData;
   onEnd: () => void;
-  initialValue?: Inputs;
+  initialValue?: ListData;
 }
 
-const FormCreate: React.FC<FormCreateProps> = ({ onEnd, initialValue }) => {
+const FormCreate: React.FC<FormCreateProps> = ({
+  typeData,
+  onEnd,
+  initialValue,
+}) => {
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -38,10 +51,13 @@ const FormCreate: React.FC<FormCreateProps> = ({ onEnd, initialValue }) => {
 
   useEffect(() => {
     if (initialValue) {
-      setValue("name", initialValue.name);
-      setValue("value", initialValue.value);
-      setValue("date", initialValue.date);
-      setValue("monthlyRepeat", initialValue.monthlyRepeat);
+      const { label, amount, date, monthlyRepeat, id } = initialValue;
+
+      setValue("id", id);
+      setValue("name", label);
+      setValue("value", amount.toString());
+      setValue("date", moment(date).format("DD/MM/YYYY"));
+      setValue("monthlyRepeat", monthlyRepeat);
     }
   }, [initialValue]);
 
@@ -49,12 +65,36 @@ const FormCreate: React.FC<FormCreateProps> = ({ onEnd, initialValue }) => {
     onEnd();
   }, [onEnd]);
 
+  const parseData = useCallback((data: Inputs): ListData => {
+    return {
+      id: data?.id ? data.id : uuid.v4(),
+      label: data.name,
+      amount: parseFloat(
+        data.value
+          .replace(".", "")
+          .replace(",", ".")
+          .replace(/[^0-9.]/g, "")
+      ),
+      checked: false,
+      date: moment(data.date, "DD/MM/YYYY").toISOString(),
+      monthlyRepeat: data.monthlyRepeat,
+    };
+  }, []);
+
   const handleConfirm = useCallback(
     (data: Inputs) => {
-      console.log(data);
+      if (initialValue) {
+        if (typeData === "income") dispatch(editIncome(parseData(data)));
+        if (typeData === "invoice") dispatch(editInvoice(parseData(data)));
+        onEnd();
+        return;
+      }
+
+      if (typeData === "income") dispatch(addIncome(parseData(data)));
+      if (typeData === "invoice") dispatch(addInvoice(parseData(data)));
       onEnd();
     },
-    [onEnd]
+    [onEnd, typeData, initialValue]
   );
 
   return (

@@ -63,7 +63,7 @@ const TextInput: React.FC<TextInputProps> = ({
             <Input
               {...props}
               value={value}
-              onChangeText={(masked) => onChange(masked)}
+              onChangeText={(masked, unmasked) => onChange(masked)}
               placeholderTextColor={theme.primary.gray}
               editable={!disabled}
               placeholder="Placeholder"

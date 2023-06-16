@@ -15,26 +15,31 @@ import { ListData, TypeData } from "../../../interfaces";
 
 type BigModalProps = {};
 
+type Open = (type: TypeData, data?: ListData) => void;
+type Close = () => void;
+
 export type BigModalRefs = {
-  open: (text?: TypeData, data?: ListData) => void;
-  close: () => void;
+  open: Open;
+  close: Close;
 };
 
 const BigModal = forwardRef<BigModalRefs, BigModalProps>((_, ref) => {
   const modalizeRef = useRef<Modalize>(null);
-  const [title, setTitle] = useState("");
+  const [typeData, setTypeData] = useState<TypeData>("income");
+  const [editableData, setEditableData] = useState<ListData>();
 
-  const open = useCallback(
-    (text?: TypeData) => {
-      if (text)
-        setTitle(text === "income" ? "Adicionar Renda" : "Adicionar Contas");
+  const open = useCallback<Open>(
+    (type, data) => {
+      setTypeData(type);
+      setEditableData(data);
       modalizeRef.current?.open();
     },
     [modalizeRef]
   );
 
-  const close = useCallback(() => {
+  const close = useCallback<Close>(() => {
     modalizeRef.current?.close();
+    setEditableData(undefined);
   }, [modalizeRef]);
 
   useImperativeHandle(
@@ -48,6 +53,25 @@ const BigModal = forwardRef<BigModalRefs, BigModalProps>((_, ref) => {
     [open, close]
   );
 
+  const flexibleTitle = useCallback(() => {
+    let transaction;
+    let toDo;
+
+    if (editableData) {
+      toDo = "Editar";
+    } else {
+      toDo = "Adicionar";
+    }
+
+    if (typeData === "income") {
+      transaction = "Renda";
+    } else {
+      transaction = "Conta";
+    }
+
+    return `${toDo} ${transaction}`;
+  }, [typeData, editableData]);
+
   return (
     <Portal>
       <Modalize
@@ -57,11 +81,15 @@ const BigModal = forwardRef<BigModalRefs, BigModalProps>((_, ref) => {
         disableScrollIfPossible={false}
         HeaderComponent={
           <HeaderContainer>
-            <Header1>{title}</Header1>
+            <Header1>{flexibleTitle()}</Header1>
           </HeaderContainer>
         }
       >
-        <FormCreate onEnd={close} />
+        <FormCreate
+          onEnd={close}
+          typeData={typeData}
+          initialValue={editableData}
+        />
       </Modalize>
     </Portal>
   );

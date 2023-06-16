@@ -4,3 +4,5 @@ export default interface ListData {
   amount: number;
   checked: boolean;
 }
+
+export type TypeData = "invoice" | "income";

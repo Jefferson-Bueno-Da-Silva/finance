@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Masks } from "react-native-mask-input";
@@ -14,10 +14,6 @@ const data = [
   { label: "Não", value: false },
 ];
 
-interface FormCreateProps {
-  onEnd: () => void;
-}
-
 type Inputs = {
   name: string;
   value: number;
@@ -25,14 +21,29 @@ type Inputs = {
   monthlyRepeat: boolean;
 };
 
-const FormCreate: React.FC<FormCreateProps> = ({ onEnd }) => {
+interface FormCreateProps {
+  onEnd: () => void;
+  initialValue?: Inputs;
+}
+
+const FormCreate: React.FC<FormCreateProps> = ({ onEnd, initialValue }) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<Inputs>({
     resolver: yupResolver(validation),
   });
+
+  useEffect(() => {
+    if (initialValue) {
+      setValue("name", initialValue.name);
+      setValue("value", initialValue.value);
+      setValue("date", initialValue.date);
+      setValue("monthlyRepeat", initialValue.monthlyRepeat);
+    }
+  }, [initialValue]);
 
   const handleCancel = useCallback(() => {
     onEnd();

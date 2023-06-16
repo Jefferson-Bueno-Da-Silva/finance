@@ -11,11 +11,12 @@ import { Portal } from "react-native-portalize";
 import { FormCreate } from "../../Forms";
 import { Header1 } from "../../../styles/fonts";
 import { HeaderContainer } from "./styles";
+import { ListData, TypeData } from "../../../interfaces";
 
 type BigModalProps = {};
 
 export type BigModalRefs = {
-  open: (text?: string) => void;
+  open: (text?: TypeData, data?: ListData) => void;
   close: () => void;
 };
 
@@ -24,8 +25,9 @@ const BigModal = forwardRef<BigModalRefs, BigModalProps>((_, ref) => {
   const [title, setTitle] = useState("");
 
   const open = useCallback(
-    (text?: string) => {
-      if (text) setTitle(text);
+    (text?: TypeData) => {
+      if (text)
+        setTitle(text === "income" ? "Adicionar Renda" : "Adicionar Contas");
       modalizeRef.current?.open();
     },
     [modalizeRef]

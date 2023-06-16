@@ -16,25 +16,38 @@ import {
   ContainerValue,
   TextLeft,
 } from "./styles";
+import { ListData } from "../../../../interfaces";
 
-export interface ItemComponent {
-  label: string;
-  amount: number;
-  checked: boolean;
+export interface ItemComponent extends ListData {
+  onPressLeft: (value: ListData) => void;
+  onPressRight: (value: ListData) => void;
 }
 
-const ListComponent: React.FC<ItemComponent> = ({ label, amount, checked }) => {
+const ListComponent: React.FC<ItemComponent> = ({
+  id,
+  label,
+  amount,
+  checked,
+  onPressLeft,
+  onPressRight,
+}) => {
   const swipeableRowRef = useRef<Swipeable>(null);
   const theme = useTheme();
-  // const [checked, setChecked] = useState(false);
-
-  const toggleCheck = useCallback(() => {
-    // setChecked((old) => !old);
-  }, []);
 
   const closeSwipeable = useCallback(() => {
     swipeableRowRef.current?.close();
   }, [swipeableRowRef]);
+
+  const toggleCheck = useCallback(() => {}, []);
+  const editData = useCallback(() => {
+    closeSwipeable();
+    onPressLeft({ id, label, amount, checked });
+  }, []);
+
+  const deleteData = useCallback(() => {
+    closeSwipeable();
+    onPressRight({ id, label, amount, checked });
+  }, []);
 
   const renderLeftActions = (
     progress: Animated.AnimatedInterpolation<number>,
@@ -46,14 +59,10 @@ const ListComponent: React.FC<ItemComponent> = ({ label, amount, checked }) => {
       extrapolate: "clamp",
     });
 
-    const pressHandler = () => {
-      closeSwipeable();
-    };
-
     return (
       <Animated.View style={{ transform: [{ translateX: trans }] }}>
         <ButtonContainer colors={theme.gradientColors.green}>
-          <Button onPress={pressHandler}>
+          <Button onPress={editData}>
             <Edit color={theme.primary.white} />
             <Label1 color={theme.primary.whiteSmoke}>Editar</Label1>
           </Button>
@@ -72,14 +81,10 @@ const ListComponent: React.FC<ItemComponent> = ({ label, amount, checked }) => {
       extrapolate: "clamp",
     });
 
-    const pressHandler = () => {
-      closeSwipeable();
-    };
-
     return (
       <Animated.View style={{ transform: [{ translateX: trans }] }}>
         <ButtonContainer colors={theme.gradientColors.red}>
-          <Button onPress={pressHandler}>
+          <Button onPress={deleteData}>
             <Trash color={theme.primary.whiteSmoke} />
             <Label1 color={theme.primary.whiteSmoke}>Excluir</Label1>
           </Button>

@@ -5,14 +5,13 @@ import uuid from "react-native-uuid";
 import { ListData, TypeData } from "../../interfaces";
 import { FloatButton, GraphicPie, ListItems, BigModal } from "../../components";
 import { BigModalRefs } from "../../components/Modals/BigModal";
+import useListItems from "../../hooks/listItems/useListItems";
 import { Container } from "./styles";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 
 const Home: React.FC = () => {
   const bigModalRef = useRef<BigModalRefs>(null);
-  const { income, invoice } = useSelector((state: RootState) => state);
   const [showButton, setShowButton] = useState<boolean>(true);
+  const { incomeData, invoiceData } = useListItems();
 
   const onFloatButtonVisible = (
     event: NativeSyntheticEvent<NativeScrollEvent>
@@ -29,34 +28,19 @@ const Home: React.FC = () => {
     [bigModalRef]
   );
 
-  const getTotal = useCallback((data: ListData[]) => {
-    return data.reduce((acc, cur) => {
-      return acc + cur.amount;
-    }, 0);
-  }, []);
-
-  const inputs = {
-    title: "Entrada",
-    total: getTotal(income),
-    type: "income" as TypeData,
-    data: income,
-  };
-
-  const outputs = {
-    title: "Saídas",
-    total: getTotal(invoice),
-    type: "invoice" as TypeData,
-    data: invoice,
-  };
-
   return (
     <Container>
       <ListItems
-        data={[inputs, outputs]}
+        data={[incomeData, invoiceData]}
         onPressLeft={(type, data) => handleOpenModal(type, data)}
         onPressRight={() => {}}
         onScroll={onFloatButtonVisible}
-        header={<GraphicPie />}
+        header={
+          <GraphicPie
+            incomeTotal={incomeData.total}
+            invoiceTotal={invoiceData.total}
+          />
+        }
       />
       <FloatButton
         showButton={showButton}

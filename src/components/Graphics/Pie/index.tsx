@@ -5,12 +5,7 @@ import { SliceProps } from "victory-pie";
 
 import { Body2, Header2, Header3 } from "../../../styles/fonts";
 import { Container, Content } from "./styles";
-import { LinearGradient } from "expo-linear-gradient";
-
-const incoming = 2000;
-const invoice = 900;
-
-const data = [invoice, incoming - invoice];
+import { Masks, formatWithMask } from "react-native-mask-input";
 
 function CustomSlice(props: SliceProps) {
   const sliceOverride = {
@@ -28,13 +23,18 @@ function CustomSlice(props: SliceProps) {
     />
   );
 }
+interface GraphicProps {
+  incomeTotal: number;
+  invoiceTotal: number;
+}
 
-const Pie: React.FC = () => {
+const Pie: React.FC<GraphicProps> = ({ incomeTotal, invoiceTotal }) => {
   const theme = useTheme();
+
   return (
     <Container>
       <VictoryPie
-        data={data}
+        data={[invoiceTotal, incomeTotal - invoiceTotal]}
         padding={0}
         animate={{ duration: 1000 }}
         colorScale={[theme.secondary.darkRed, theme.primary.cleanGreen]}
@@ -47,11 +47,23 @@ const Pie: React.FC = () => {
       <Content>
         <Body2>Renda</Body2>
         <Header2 color={theme.primary.darkGreen}>
-          R$ {incoming.toFixed(2).replace(".", ",")}
+          {
+            formatWithMask({
+              text: incomeTotal.toFixed(2),
+              maskAutoComplete: true,
+              mask: Masks.BRL_CURRENCY,
+            }).masked
+          }
         </Header2>
         <Body2>Débito</Body2>
         <Header3 color={theme.primary.darkRed}>
-          R$ {invoice.toFixed(2).replace(".", ",")}
+          {
+            formatWithMask({
+              text: invoiceTotal.toFixed(2),
+              maskAutoComplete: true,
+              mask: Masks.BRL_CURRENCY,
+            }).masked
+          }
         </Header3>
       </Content>
     </Container>

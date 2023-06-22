@@ -21,8 +21,6 @@ const Home: React.FC = () => {
 
   const handleOpenModal = useCallback(
     (text: TypeData, data?: ListData) => {
-      console.log(text, data);
-
       bigModalRef.current?.open(text, data);
     },
     [bigModalRef]

@@ -55,7 +55,7 @@ const FormCreate: React.FC<FormCreateProps> = ({
 
       setValue("id", id);
       setValue("name", label);
-      setValue("value", amount.toString());
+      setValue("value", amount.toFixed(2));
       setValue("date", moment(date).format("DD/MM/YYYY"));
       setValue("monthlyRepeat", monthlyRepeat);
     }

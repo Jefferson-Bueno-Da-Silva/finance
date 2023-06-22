@@ -1,3 +1,3 @@
-import ListItens from "./ListItens";
+import ListItems from "./ListItems";
 
-export { ListItens };
+export { ListItems  };

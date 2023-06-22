@@ -3,7 +3,7 @@ import { NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 import uuid from "react-native-uuid";
 
 import { ListData, TypeData } from "../../interfaces";
-import { FloatButton, GraphicPie, ListItens, BigModal } from "../../components";
+import { FloatButton, GraphicPie, ListItems, BigModal } from "../../components";
 import { BigModalRefs } from "../../components/Modals/BigModal";
 import { Container } from "./styles";
 import { useSelector } from "react-redux";
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
 
   return (
     <Container>
-      <ListItens
+      <ListItems
         data={[inputs, outputs]}
         onPressLeft={(type, data) => handleOpenModal(type, data)}
         onPressRight={() => {}}

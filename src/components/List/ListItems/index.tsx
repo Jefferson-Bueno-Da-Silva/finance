@@ -15,7 +15,7 @@ import { ContentValue } from "./styles";
 import { Masks, formatWithMask } from "react-native-mask-input";
 import { ListData, TypeData } from "../../../interfaces";
 
-interface ListItens {
+interface ListItems {
   onPressLeft: onPressLeft;
   onPressRight: onPressRight;
   data: SectionListData<
@@ -33,7 +33,7 @@ interface ListItens {
     | undefined;
 }
 
-const ListItens: React.FC<ListItens> = ({
+const ListItems: React.FC<ListItems> = ({
   header,
   onScroll,
   onPressLeft,
@@ -76,4 +76,4 @@ const ListItens: React.FC<ListItens> = ({
   );
 };
 
-export default memo(ListItens);
+export default memo(ListItems);

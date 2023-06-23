@@ -1,16 +1,17 @@
 import React, { useCallback } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { ThemeProvider } from "styled-components";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import Routes from "./src/routes";
 import { MainContainer } from "./src/styles/Container";
 import { defaultTheme } from "./src/styles/theme";
-import { store } from "./src/redux/store";
+import { persistor, store } from "./src/redux/store";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -35,10 +36,12 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <ThemeProvider theme={defaultTheme}>
         <Provider store={store}>
-          <MainContainer>
-            <StatusBar style="dark" />
-            <Routes />
-          </MainContainer>
+          <PersistGate loading={<Text>Loading...</Text>} persistor={persistor}>
+            <MainContainer>
+              <StatusBar style="dark" />
+              <Routes />
+            </MainContainer>
+          </PersistGate>
         </Provider>
       </ThemeProvider>
     </GestureHandlerRootView>

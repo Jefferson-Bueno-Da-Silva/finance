@@ -21,7 +21,7 @@ import {
 } from "./styles";
 
 export type onPressLeft = (type: TypeData, value: ListData) => void;
-export type onPressRight = (value: ListData) => void;
+export type onPressRight = (type: TypeData, value: ListData) => void;
 
 export interface ItemComponent {
   data: ListData;
@@ -61,8 +61,8 @@ const ListComponent: React.FC<ItemComponent> = ({
 
   const deleteData = useCallback(() => {
     closeSwipeable();
-    onPressRight(data);
-  }, [data]);
+    onPressRight(type, data);
+  }, [type, data]);
 
   const renderLeftActions = (
     progress: Animated.AnimatedInterpolation<number>,

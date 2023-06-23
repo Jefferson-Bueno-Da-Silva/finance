@@ -1,12 +1,11 @@
 import React from "react";
-import { View } from "react-native";
 
 import { Container, Title } from "./styles";
 
 const SimpleHeader: React.FC = () => {
   return (
     <Container>
-      <Title>Finanças</Title>
+      <Title>Minhas Finanças</Title>
     </Container>
   );
 };

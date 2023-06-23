@@ -50,6 +50,8 @@ const FormCreate: React.FC<FormCreateProps> = ({
   });
 
   useEffect(() => {
+    setValue("date", moment().format("DD/MM/YYYY"));
+
     if (initialValue) {
       const { label, amount, date, monthlyRepeat, id } = initialValue;
 

@@ -30,11 +30,15 @@ interface GraphicProps {
 
 const Pie: React.FC<GraphicProps> = ({ incomeTotal, invoiceTotal }) => {
   const theme = useTheme();
+  const data = [
+    invoiceTotal,
+    incomeTotal - invoiceTotal ? incomeTotal - invoiceTotal : 1,
+  ];
 
   return (
     <Container>
       <VictoryPie
-        data={[invoiceTotal, incomeTotal - invoiceTotal]}
+        data={data}
         padding={0}
         animate={{ duration: 1000 }}
         colorScale={[theme.secondary.darkRed, theme.primary.cleanGreen]}

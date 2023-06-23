@@ -39,9 +39,7 @@ const Home: React.FC = () => {
       <ListItems
         data={[incomeData, invoiceData]}
         onPressLeft={(type, data) => handleOpenModal(type, data)}
-        onPressRight={(type, data) => {
-          handleDelete(type, data);
-        }}
+        onPressRight={(type, data) => handleDelete(type, data)}
         onScroll={onFloatButtonVisible}
         header={
           <GraphicPie

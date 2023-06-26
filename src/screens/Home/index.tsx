@@ -7,14 +7,14 @@ import { FloatButton, GraphicPie, ListItems, BigModal } from "../../components";
 import { BigModalRefs } from "../../components/Modals/BigModal";
 import useListItems from "../../hooks/listItems/useListItems";
 import { Container } from "./styles";
-import { removeIncome } from "../../redux/incomeSlice";
-import { removeInvoice } from "../../redux/invoiceSlice";
+import { useTransactions } from "../../hooks";
 
 const Home: React.FC = () => {
   const bigModalRef = useRef<BigModalRefs>(null);
   const [showButton, setShowButton] = useState<boolean>(true);
   const { incomeData, invoiceData } = useListItems();
   const dispatch = useDispatch();
+  const { remove } = useTransactions();
 
   const onFloatButtonVisible = (
     event: NativeSyntheticEvent<NativeScrollEvent>
@@ -30,8 +30,7 @@ const Home: React.FC = () => {
   );
 
   const handleDelete = useCallback((type: TypeData, data: ListData) => {
-    if (type === "income") return dispatch(removeIncome(data));
-    if (type === "invoice") return dispatch(removeInvoice(data));
+    remove(type, data);
   }, []);
 
   return (

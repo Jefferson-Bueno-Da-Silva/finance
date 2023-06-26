@@ -1,19 +1,16 @@
 import React, { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Masks, formatWithMask } from "react-native-mask-input";
-import uuid from "react-native-uuid";
+import { Masks } from "react-native-mask-input";
 
 import { MultipleChoiceInput, TextInput } from "../../Inputs";
 import { Container, FooterContainer } from "./styles";
-import { option } from "../../Inputs/MultipleChoiceInput";
 import { Button } from "../../Buttons";
 import { validation } from "./validation";
 import { ListData, TypeData } from "../../../interfaces";
-import { addIncome, editIncome } from "../../../redux/incomeSlice";
 import moment from "moment";
-import { useDispatch } from "react-redux";
-import { addInvoice, editInvoice } from "../../../redux/invoiceSlice";
+import { useTransactions } from "../../../hooks";
 
 const data = [
   { label: "Sim", value: true },
@@ -48,6 +45,7 @@ const FormCreate: React.FC<FormCreateProps> = ({
   } = useForm<Inputs>({
     resolver: yupResolver(validation),
   });
+  const { add, edit } = useTransactions();
 
   useEffect(() => {
     setValue("date", moment().format("DD/MM/YYYY"));
@@ -67,34 +65,17 @@ const FormCreate: React.FC<FormCreateProps> = ({
     onEnd();
   }, [onEnd]);
 
-  const parseData = useCallback((data: Inputs): ListData => {
-    return {
-      id: data?.id ? data.id : uuid.v4(),
-      label: data.name,
-      amount: parseFloat(
-        data.value
-          .replace(".", "")
-          .replace(",", ".")
-          .replace(/[^0-9.]/g, "")
-      ),
-      checked: false,
-      date: moment(data.date, "DD/MM/YYYY").toISOString(),
-      monthlyRepeat: data.monthlyRepeat,
-    };
-  }, []);
-
   const handleConfirm = useCallback(
     (data: Inputs) => {
       if (initialValue) {
-        if (typeData === "income") dispatch(editIncome(parseData(data)));
-        if (typeData === "invoice") dispatch(editInvoice(parseData(data)));
+        edit(typeData, data);
         onEnd();
         return;
       }
 
-      if (typeData === "income") dispatch(addIncome(parseData(data)));
-      if (typeData === "invoice") dispatch(addInvoice(parseData(data)));
+      add(typeData, data);
       onEnd();
+      return;
     },
     [onEnd, typeData, initialValue]
   );
@@ -120,7 +101,7 @@ const FormCreate: React.FC<FormCreateProps> = ({
         name="date"
         control={control}
         errorMessage={errors.date?.message}
-        label="Data"
+        label="Vencimento"
         icon
         keyboardType="number-pad"
         mask={Masks.DATE_DDMMYYYY}

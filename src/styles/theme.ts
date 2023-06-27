@@ -5,7 +5,7 @@ export const defaultTheme: DefaultTheme = {
   primary: {
     white: "#FFFFFF",
     whiteSmoke: "#F7F7F7",
-    black: "#171930",
+    black: "#040404",
     darkGreen: "#00930F",
     cleanGreen: "#04D361",
     darkRed: "#B50000",

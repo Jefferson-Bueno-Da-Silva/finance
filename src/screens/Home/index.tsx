@@ -3,7 +3,13 @@ import { NativeSyntheticEvent, NativeScrollEvent } from "react-native";
 import { useDispatch } from "react-redux";
 
 import { ListData, TypeData } from "../../interfaces";
-import { FloatButton, GraphicPie, ListItems, BigModal } from "../../components";
+import {
+  FloatButton,
+  GraphicPie,
+  ListItems,
+  BigModal,
+  DateHeader,
+} from "../../components";
 import { BigModalRefs } from "../../components/Modals/BigModal";
 import useListItems from "../../hooks/listItems/useListItems";
 import { Container } from "./styles";
@@ -35,6 +41,7 @@ const Home: React.FC = () => {
 
   return (
     <Container>
+      <DateHeader />
       <ListItems
         data={[incomeData, invoiceData]}
         onPressLeft={(type, data) => handleOpenModal(type, data)}

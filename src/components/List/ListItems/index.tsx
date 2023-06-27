@@ -15,18 +15,19 @@ import { ContentValue } from "./styles";
 import { Masks, formatWithMask } from "react-native-mask-input";
 import { ListData, TypeData } from "../../../interfaces";
 
+export type section = {
+  title: string;
+  total: number;
+  type: TypeData;
+  currentYear: number;
+  currentMonth: number;
+  data: ListData[];
+};
+
 interface ListItems {
   onPressLeft: onPressLeft;
   onPressRight: onPressRight;
-  data: SectionListData<
-    ListData,
-    {
-      title: string;
-      total: number;
-      type: TypeData;
-      data: ListData[];
-    }
-  >[];
+  data: SectionListData<ListData, section>[];
   header: JSX.Element;
   onScroll?:
     | ((event: NativeSyntheticEvent<NativeScrollEvent>) => void)
@@ -44,7 +45,7 @@ const ListItems: React.FC<ListItems> = ({
     <SectionList
       onScroll={onScroll}
       horizontal={false}
-      sections={data.filter((section) => section.data.length > 0)}
+      sections={data.filter((section) => section.data?.length > 0)}
       contentContainerStyle={{
         padding: 16,
         gap: 8,
@@ -56,7 +57,7 @@ const ListItems: React.FC<ListItems> = ({
           <Body1>
             {
               formatWithMask({
-                text: section.total.toFixed(2),
+                text: section.total?.toFixed(2),
                 maskAutoComplete: true,
                 mask: Masks.BRL_CURRENCY,
               }).masked
@@ -64,10 +65,10 @@ const ListItems: React.FC<ListItems> = ({
           </Body1>
         </ContentValue>
       )}
-      renderItem={({ item, section, index }) => (
+      renderItem={({ item, section }) => (
         <ListComponent
           data={item}
-          type={section.type}
+          section={section}
           onPressLeft={onPressLeft}
           onPressRight={onPressRight}
         />

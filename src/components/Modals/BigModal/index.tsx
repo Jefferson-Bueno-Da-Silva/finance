@@ -15,7 +15,12 @@ import { ListData, TypeData } from "../../../interfaces";
 
 type BigModalProps = {};
 
-type Open = (type: TypeData, data?: ListData) => void;
+type Open = (
+  type: TypeData,
+  data?: ListData,
+  year?: number,
+  month?: number
+) => void;
 type Close = () => void;
 
 export type BigModalRefs = {
@@ -26,12 +31,16 @@ export type BigModalRefs = {
 const BigModal = forwardRef<BigModalRefs, BigModalProps>((_, ref) => {
   const modalizeRef = useRef<Modalize>(null);
   const [typeData, setTypeData] = useState<TypeData>("income");
-  const [editableData, setEditableData] = useState<ListData>();
+  const [editableData, setEditableData] = useState<
+    ListData & { year: number; month: number }
+  >();
 
   const open = useCallback<Open>(
-    (type, data) => {
+    (type, data, year, month) => {
       setTypeData(type);
-      setEditableData(data);
+      if (data && year && month) {
+        setEditableData({ ...data, year, month });
+      }
       modalizeRef.current?.open();
     },
     [modalizeRef]

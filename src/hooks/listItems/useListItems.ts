@@ -1,38 +1,79 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ListData, TypeData } from "../../interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { Income, Invoice } from "../../interfaces/listData";
+import moment from "moment";
 
 const useListItems = () => {
-  const { income, invoice } = useSelector((state: RootState) => state);
+  const { transactions } = useSelector((state: RootState) => state);
+  const [currentMonth, setCurrentMonth] = useState(moment().month());
+  const [currentYear, setCurrentYear] = useState(moment().year());
 
-  const getTotal = useCallback((data: ListData[]) => {
+  const nextMonth = useCallback(() => {
+    setCurrentMonth((old) => {
+      if (old + 1 > 11) {
+        setCurrentYear((old) => old + 1);
+        return 0;
+      }
+      return old + 1;
+    });
+  }, []);
+
+  const previousMonth = useCallback(() => {
+    setCurrentMonth((old) => {
+      if (old - 1 < 0) {
+        setCurrentYear((old) => old - 1);
+        return 11;
+      }
+      return old - 1;
+    });
+  }, []);
+
+  const getTotal = useCallback((data: Income[] | Invoice[]) => {
     return data.reduce((acc, cur) => {
       return acc + cur.amount;
     }, 0);
   }, []);
 
-  const incomeData = useMemo(
-    () => ({
+  const incomeData = useMemo(() => {
+    const incomes =
+      transactions?.[currentYear.toString()]?.[currentMonth.toString()]
+        ?.incomes || [];
+
+    return {
       title: "Entrada",
-      total: getTotal(income),
+      total: getTotal(incomes),
       type: "income" as TypeData,
-      data: income,
-    }),
-    [income]
-  );
+      currentYear,
+      currentMonth,
+      data: incomes,
+    };
+  }, [transactions, currentYear, currentMonth]);
 
-  const invoiceData = useMemo(
-    () => ({
+  const invoiceData = useMemo(() => {
+    const invoices =
+      transactions?.[currentYear.toString()]?.[currentMonth.toString()]
+        ?.invoices || [];
+
+    return {
       title: "Saídas",
-      total: getTotal(invoice),
+      total: getTotal(invoices),
       type: "invoice" as TypeData,
-      data: invoice,
-    }),
-    [invoice]
-  );
+      currentYear,
+      currentMonth,
+      data: invoices,
+    };
+  }, [transactions, currentYear, currentMonth]);
 
-  return { incomeData, invoiceData };
+  return {
+    incomeData,
+    invoiceData,
+    currentMonth,
+    currentYear,
+    nextMonth,
+    previousMonth,
+  };
 };
 
 export default useListItems;

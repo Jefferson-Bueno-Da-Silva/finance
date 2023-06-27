@@ -28,7 +28,7 @@ export type Inputs = {
 interface FormCreateProps {
   typeData: TypeData;
   onEnd: () => void;
-  initialValue?: ListData;
+  initialValue?: ListData & { year: number; month: number };
 }
 
 const FormCreate: React.FC<FormCreateProps> = ({
@@ -36,7 +36,6 @@ const FormCreate: React.FC<FormCreateProps> = ({
   onEnd,
   initialValue,
 }) => {
-  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -68,7 +67,7 @@ const FormCreate: React.FC<FormCreateProps> = ({
   const handleConfirm = useCallback(
     (data: Inputs) => {
       if (initialValue) {
-        edit(typeData, data);
+        edit(typeData, data, initialValue.year, initialValue.month);
         onEnd();
         return;
       }

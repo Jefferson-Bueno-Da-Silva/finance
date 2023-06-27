@@ -5,8 +5,6 @@ import { useTheme } from "styled-components";
 import { formatWithMask, Masks } from "react-native-mask-input";
 import { useDispatch } from "react-redux";
 
-import { editIncome } from "../../../../redux/incomeSlice";
-import { editInvoice } from "../../../../redux/invoiceSlice";
 import { ListData, TypeData } from "../../../../interfaces";
 import { CheckIcon, Edit, Trash } from "../../../../assets";
 import { Label1 } from "../../../../styles/fonts";
@@ -19,6 +17,8 @@ import {
   Container,
   ContainerValue,
 } from "./styles";
+import { editTransactions } from "../../../../redux/transactionsSlice";
+import { section } from "../../ListItems";
 
 export type onPressLeft = (type: TypeData, value: ListData) => void;
 export type onPressRight = (type: TypeData, value: ListData) => void;
@@ -27,14 +27,14 @@ export interface ItemComponent {
   data: ListData;
   onPressLeft: onPressLeft;
   onPressRight: onPressRight;
-  type: TypeData;
+  section: section;
 }
 
 const ListComponent: React.FC<ItemComponent> = ({
   data,
   onPressLeft,
   onPressRight,
-  type,
+  section,
 }) => {
   const swipeableRowRef = useRef<Swipeable>(null);
   const dispatch = useDispatch();
@@ -45,24 +45,26 @@ const ListComponent: React.FC<ItemComponent> = ({
   }, [swipeableRowRef]);
 
   const toggleCheck = useCallback(() => {
-    if (type === "income") {
-      dispatch(editIncome({ ...data, checked: !data.checked }));
-    }
-
-    if (type === "invoice") {
-      dispatch(editInvoice({ ...data, checked: !data.checked }));
-    }
-  }, [data, type]);
+    dispatch(
+      editTransactions({
+        type: section.type,
+        year: section.currentYear.toString(),
+        month: section.currentMonth.toString(),
+        ...data,
+        checked: !data.checked,
+      })
+    );
+  }, [data, section]);
 
   const editData = useCallback(() => {
     closeSwipeable();
-    onPressLeft(type, data);
-  }, [type, data]);
+    onPressLeft(section.type, data);
+  }, [section, data]);
 
   const deleteData = useCallback(() => {
     closeSwipeable();
-    onPressRight(type, data);
-  }, [type, data]);
+    onPressRight(section.type, data);
+  }, [section, data]);
 
   const renderLeftActions = (
     progress: Animated.AnimatedInterpolation<number>,

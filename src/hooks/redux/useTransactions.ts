@@ -1,15 +1,15 @@
 import uuid from "react-native-uuid";
+import moment from "moment";
 import { useDispatch } from "react-redux";
-import { addIncome, editIncome, removeIncome } from "../../redux/incomeSlice";
-import {
-  addInvoice,
-  editInvoice,
-  removeInvoice,
-} from "../../redux/invoiceSlice";
 import { useCallback } from "react";
+
 import { Inputs } from "../../components/Forms/FormCreate";
 import { ListData, TypeData } from "../../interfaces";
-import moment from "moment";
+import {
+  addTransaction,
+  editTransactions,
+  removeTransactions,
+} from "../../redux/transactionsSlice";
 
 const useTransactions = () => {
   const dispatch = useDispatch();
@@ -31,19 +31,50 @@ const useTransactions = () => {
   }, []);
 
   const add = useCallback((typeData: TypeData, data: Inputs) => {
-    if (typeData === "income") dispatch(addIncome(parseData(data)));
-    if (typeData === "invoice") dispatch(addInvoice(parseData(data)));
+    if (typeData === "income")
+      dispatch(addTransaction({ income: parseData(data) }));
+
+    if (typeData === "invoice")
+      dispatch(addTransaction({ invoice: parseData(data) }));
   }, []);
 
-  const edit = useCallback((typeData: TypeData, data: Inputs) => {
-    if (typeData === "income") dispatch(editIncome(parseData(data)));
-    if (typeData === "invoice") dispatch(editInvoice(parseData(data)));
-  }, []);
+  const edit = useCallback(
+    (
+      type: TypeData,
+      data: Inputs,
+      currentYear: number,
+      currentMonth: number
+    ) => {
+      dispatch(
+        editTransactions({
+          type,
+          year: currentYear.toString(),
+          month: currentMonth.toString(),
+          ...parseData(data),
+        })
+      );
+    },
+    []
+  );
 
-  const remove = useCallback((type: TypeData, data: ListData) => {
-    if (type === "income") return dispatch(removeIncome(data));
-    if (type === "invoice") return dispatch(removeInvoice(data));
-  }, []);
+  const remove = useCallback(
+    (
+      type: TypeData,
+      data: ListData,
+      currentYear: number,
+      currentMonth: number
+    ) => {
+      dispatch(
+        removeTransactions({
+          type,
+          year: currentYear.toString(),
+          month: currentMonth.toString(),
+          ...data,
+        })
+      );
+    },
+    []
+  );
 
   return {
     add,

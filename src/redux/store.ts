@@ -3,8 +3,7 @@ import thunk from "redux-thunk";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 
-import incomeSlice from "./incomeSlice";
-import invoiceSlice from "./invoiceSlice";
+import transactionsSlice from "./transactionsSlice";
 
 const persistConfig = {
   key: "root",
@@ -12,8 +11,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  income: incomeSlice,
-  invoice: invoiceSlice,
+  transactions: transactionsSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

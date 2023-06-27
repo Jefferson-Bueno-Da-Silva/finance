@@ -10,7 +10,6 @@ import {
   Title,
 } from "../styles";
 import { LeftArrow, RightArrow } from "../../../assets";
-import moment from "moment";
 import { StatusBar } from "expo-status-bar";
 
 const months = [
@@ -28,33 +27,21 @@ const months = [
   "Dezembro",
 ];
 
-const DateHeader: React.FC = () => {
+type DateHeaderProps = {
+  currentMonth: number;
+  currentYear: number;
+  nextMonth: () => void;
+  previousMonth: () => void;
+};
+
+const DateHeader: React.FC<DateHeaderProps> = ({
+  currentMonth,
+  previousMonth,
+  nextMonth,
+  currentYear,
+}) => {
   const theme = useTheme();
-  const [currentMonth, setCurrentMonth] = useState(moment().month());
-  const [year, setYear] = useState(moment().year());
-
-  const month = useMemo(() => months[currentMonth], [currentMonth]);
-
-  const nextMonth = useCallback(() => {
-    setCurrentMonth((old) => {
-      if (old + 1 > 11) {
-        setYear((old) => old + 1);
-        return 0;
-      }
-      return old + 1;
-    });
-  }, []);
-
-  const previousMonth = useCallback(() => {
-    // setCurrentMonth((old) => (old - 1 < 0 ? 11 : old - 1));
-    setCurrentMonth((old) => {
-      if (old - 1 < 0) {
-        setYear((old) => old - 1);
-        return 11;
-      }
-      return old - 1;
-    });
-  }, []);
+  const monthName = useMemo(() => months[currentMonth], [currentMonth]);
 
   return (
     <>
@@ -64,8 +51,8 @@ const DateHeader: React.FC = () => {
           <LeftArrow color={theme.primary.whiteSmoke} />
         </Button>
         <TextContainer>
-          <Title>{month}</Title>
-          <SubTitle>{year}</SubTitle>
+          <Title>{monthName}</Title>
+          <SubTitle>{currentYear}</SubTitle>
         </TextContainer>
         <Button onPress={nextMonth}>
           <RightArrow color={theme.primary.whiteSmoke} />

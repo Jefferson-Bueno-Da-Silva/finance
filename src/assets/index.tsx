@@ -5,6 +5,8 @@ import Plus from "./svgs/Plus";
 import CheckIcon from "./svgs/Check";
 import CalendarOutline from "./svgs/CalendarOutline";
 import ErrorCircleOutline from "./svgs/ErrorCircleOutline";
+import LeftArrow from "./svgs/LeftArrow";
+import RightArrow from "./svgs/RightArrow";
 
 export {
   Money,
@@ -14,4 +16,6 @@ export {
   CheckIcon,
   CalendarOutline,
   ErrorCircleOutline,
+  LeftArrow,
+  RightArrow,
 };

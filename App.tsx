@@ -1,3 +1,7 @@
+if (__DEV__) {
+  import("./ReactotronConfig").then(() => console.log("Reactotron Configured"));
+}
+
 import React, { useCallback } from "react";
 import { Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";

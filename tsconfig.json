@@ -3,7 +3,8 @@
     "jsx": "react-native",
     "resolveJsonModule": true,
     "strict": true,
-    "types": ["@types/styled-components-react-native"]
+    "types": ["@types/styled-components-react-native"],
+    "module": "ESNext"
   },
   "extends": "expo/tsconfig.base"
 }

@@ -4,6 +4,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 
 import transactionsSlice from "./transactionsSlice";
+import reactotron from "../../ReactotronConfig";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: [thunk],
+  enhancers: [reactotron.createEnhancer!()],
 });
 export const persistor = persistStore(store);
 

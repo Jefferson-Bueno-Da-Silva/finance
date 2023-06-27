@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container, Title } from "./styles";
+import { Container, Title } from "../styles";
 
 const SimpleHeader: React.FC = () => {
   return (

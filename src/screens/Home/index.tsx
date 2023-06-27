@@ -1,6 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
 import { NativeSyntheticEvent, NativeScrollEvent } from "react-native";
-import { useDispatch } from "react-redux";
 
 import { ListData, TypeData } from "../../interfaces";
 import {
@@ -19,7 +18,6 @@ const Home: React.FC = () => {
   const bigModalRef = useRef<BigModalRefs>(null);
   const [showButton, setShowButton] = useState<boolean>(true);
   const { incomeData, invoiceData } = useListItems();
-  const dispatch = useDispatch();
   const { remove } = useTransactions();
 
   const onFloatButtonVisible = (

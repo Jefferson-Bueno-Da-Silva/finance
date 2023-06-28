@@ -21,26 +21,9 @@ type transactions = {
   };
 };
 
-const reset: Action<
-  transactions,
-  { incomes: Income[]; invoices: Invoice[] }
-> = (state, { payload }) => {
-  const year = moment().year();
-  const month = moment().month();
-  return {
-    ...state,
-    [year]: {
-      [month]: {
-        incomes: payload.incomes,
-        invoices: payload.invoices,
-      },
-    },
-  };
-};
-
 const getTransactions = (state: transactions, year: string, month: string) => {
-  const invoices = state?.[year]?.[month].invoices || [];
-  const incomes = state?.[year]?.[month].incomes || [];
+  const invoices = state?.[year]?.[month]?.invoices || [];
+  const incomes = state?.[year]?.[month]?.incomes || [];
   return { incomes, invoices };
 };
 
@@ -48,11 +31,11 @@ const add: Action<transactions, { income?: Income; invoice?: Invoice }> = (
   state,
   { payload }
 ) => {
-  const year = moment().year().toString();
-  const month = moment().month().toString();
-  const { incomes, invoices } = getTransactions(state, year, month);
-
   if (payload?.income) {
+    const year = moment(payload.income.date).year().toString();
+    const month = moment(payload.income.date).month().toString();
+    const { incomes, invoices } = getTransactions(state, year, month);
+
     return {
       ...state,
       [year]: {
@@ -66,6 +49,10 @@ const add: Action<transactions, { income?: Income; invoice?: Invoice }> = (
   }
 
   if (payload?.invoice) {
+    const year = moment(payload.invoice.date).year().toString();
+    const month = moment(payload.invoice.date).month().toString();
+    const { incomes, invoices } = getTransactions(state, year, month);
+
     return {
       ...state,
       [year]: {
@@ -171,16 +158,11 @@ const transactionsSlice = createSlice({
   initialState: {} as transactions,
   reducers: {
     addTransaction: add,
-    resetTransactions: reset,
     removeTransactions: remove,
     editTransactions: edit,
   },
 });
 
-export const {
-  addTransaction,
-  resetTransactions,
-  removeTransactions,
-  editTransactions,
-} = transactionsSlice.actions;
+export const { addTransaction, removeTransactions, editTransactions } =
+  transactionsSlice.actions;
 export default transactionsSlice.reducer;

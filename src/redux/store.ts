@@ -2,9 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import thunk from "redux-thunk";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
+import reactotron from "../../ReactotronConfig";
 
 import transactionsSlice from "./transactionsSlice";
-import reactotron from "../../ReactotronConfig";
+import monthlyRepeatSlice from "./monthlyRepeatSlice";
 
 const persistConfig = {
   key: "root",
@@ -13,6 +14,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   transactions: transactionsSlice,
+  monthlyRepeat: monthlyRepeatSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -6,7 +6,9 @@ import { Income, Invoice } from "../../interfaces/listData";
 import moment from "moment";
 
 const useListItems = () => {
-  const { transactions } = useSelector((state: RootState) => state);
+  const { transactions, monthlyRepeat } = useSelector(
+    (state: RootState) => state
+  );
   const [currentMonth, setCurrentMonth] = useState(moment().month());
   const [currentYear, setCurrentYear] = useState(moment().year());
 
@@ -37,9 +39,15 @@ const useListItems = () => {
   }, []);
 
   const incomeData = useMemo(() => {
-    const incomes =
+    const transactionsIncomes =
       transactions?.[currentYear.toString()]?.[currentMonth.toString()]
         ?.incomes || [];
+    const monthlyRepeatIncomes =
+      monthlyRepeat?.incomes?.filter(
+        (income) => moment(income.date).month() <= currentMonth
+      ) || [];
+
+    const incomes = [...monthlyRepeatIncomes, ...transactionsIncomes];
 
     return {
       title: "Entrada",
@@ -49,12 +57,18 @@ const useListItems = () => {
       currentMonth,
       data: incomes,
     };
-  }, [transactions, currentYear, currentMonth]);
+  }, [transactions, monthlyRepeat, currentYear, currentMonth]);
 
   const invoiceData = useMemo(() => {
-    const invoices =
+    const transactionsInvoices =
       transactions?.[currentYear.toString()]?.[currentMonth.toString()]
         ?.invoices || [];
+    const monthlyRepeatInvoices =
+      monthlyRepeat?.invoices?.filter(
+        (invoice) => moment(invoice.date).month() <= currentMonth
+      ) || [];
+
+    const invoices = [...monthlyRepeatInvoices, ...transactionsInvoices];
 
     return {
       title: "Saídas",
@@ -64,7 +78,7 @@ const useListItems = () => {
       currentMonth,
       data: invoices,
     };
-  }, [transactions, currentYear, currentMonth]);
+  }, [transactions, monthlyRepeat, currentYear, currentMonth]);
 
   return {
     incomeData,

@@ -10,6 +10,7 @@ import {
   editTransactions,
   removeTransactions,
 } from "../../redux/transactionsSlice";
+import { addMonthlyRepeat } from "../../redux/monthlyRepeatSlice";
 
 const useTransactions = () => {
   const dispatch = useDispatch();
@@ -31,11 +32,21 @@ const useTransactions = () => {
   }, []);
 
   const add = useCallback((typeData: TypeData, data: Inputs) => {
-    if (typeData === "income")
-      dispatch(addTransaction({ income: parseData(data) }));
+    if (typeData === "income") {
+      if (data.monthlyRepeat) {
+        dispatch(addMonthlyRepeat({ income: parseData(data) }));
+      } else {
+        dispatch(addTransaction({ income: parseData(data) }));
+      }
+    }
 
-    if (typeData === "invoice")
-      dispatch(addTransaction({ invoice: parseData(data) }));
+    if (typeData === "invoice") {
+      if (data.monthlyRepeat) {
+        dispatch(addMonthlyRepeat({ invoice: parseData(data) }));
+      } else {
+        dispatch(addTransaction({ invoice: parseData(data) }));
+      }
+    }
   }, []);
 
   const edit = useCallback(
